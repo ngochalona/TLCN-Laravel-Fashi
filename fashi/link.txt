@@ -1,0 +1,18 @@
+http://localhost:1338/TLCN/fashi/fashi/public/
+ver 5-6
+check admin nhập có trùng sku k
+
+chỉnh lại cho giống web Việt,
+check mail xác thực
+kiểm tra hàng còn không
+cb làm invoice
+
+
+
+làm invoice và duyệt đơn
+xóa mềm
+làm edit khuyến mãi
+làm tỉnh thành
+
+khi client show bất kì cái j thì phải kt có isDelete k
+
