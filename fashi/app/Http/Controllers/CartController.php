@@ -26,7 +26,7 @@ class CartController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
             View::share('categoriess',$categoriess);
         });
 
@@ -112,7 +112,10 @@ class CartController extends Controller
             // chuỗi json $userCart thêm vào field image, dưới cart không có image
             $userCart[$key]->image = $productDetails->image ;
         }
-        return view('fashi.products.cart', compact('userCart'));
+
+        $coupons = Coupons::where('isDelete', 0)->get();
+
+        return view('fashi.products.cart', compact('userCart', 'coupons'));
     }
 
     public function deleteCartProduct($id=null)
@@ -131,7 +134,7 @@ class CartController extends Controller
         if($request->isMethod('post'))
         {
             $data = $request->all();
-            $couponCount = Coupons::where('coupon_code',$data['coupon_code'])->count();
+            $couponCount = Coupons::where('isDelete', 0)->where('coupon_code',$data['coupon_code'])->count();
             if($couponCount == 0)
             {
                 return redirect()->back()->with('flash_message_error','Coupon does not exist');
@@ -140,7 +143,7 @@ class CartController extends Controller
             else
             {
                 // lấy hết thông tin của coupon được ng dùng nhập vào
-                $couponDetails = Coupons::where('coupon_code',$data['coupon_code'])->first();
+                $couponDetails = Coupons::where('isDelete', 0)->where('coupon_code',$data['coupon_code'])->first();
                 //coupon code status
                 if($couponDetails->status == 0)
                 {
@@ -179,7 +182,7 @@ class CartController extends Controller
                 if($couponDetails->amount_type == "Fixed")
                 {
                     // số tiền discount
-                    $couponAmount = $couponDetails->amount;// lấy số tiền sẽ giảm
+                    $coupon = $couponDetails->amount;// lấy số tiền sẽ giảm
                 }
                 else
                 {
@@ -319,32 +322,6 @@ class CartController extends Controller
 
         return view('fashi.products.checkout', compact('userDetails', 'userCart'));
     }
-
-
-    // public function orderReview()
-    // {
-    //     $session_id = Session::get('session_id');
-    //     $user_id = Auth::user()->id;
-    //     $user_email = Auth::user()->email;
-    //     $shippingDetails = DeliveryAddress::where('user_id', $user_id)->first();
-    //     $userDetails = User::find($user_id);
-
-    //     $userCart = DB::table('cart')->where('user_email', $user_email)->orWhere('session_id', $session_id)->get();
-    //     foreach ($userCart as $key => $product) {
-    //         $productDetails = Product::where('id', $product->product_id)->first();
-    //         $userCart[$key]->image = $productDetails->image;
-    //     }
-    //     return view('fashi.products.order_review', compact('userDetails','shippingDetails','userCart'));
-    // }
-
-    // public function placeOrder(Request $request)
-    // {
-    //     if($request->isMethod('post'))
-    //     {
-
-
-    //     }
-    // }
 
     public function thanks()
     {

@@ -17,7 +17,7 @@ class ProductController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
             View::share('categoriess',$categoriess);
         });
 
@@ -75,14 +75,14 @@ class ProductController extends Controller
 
         // category dropdown menu
         // lấy tất cả các caterogy cha
-        $category = Category::where(['parent_id' => 0])->get();
+        $category = Category::where('isDelete', 0)->where(['parent_id' => 0])->get();
         $category_dropdown = "<option value='' selected disabled>Select</option>";
         foreach($category as $cat)
         {
             // đưa category cha vào option
             $category_dropdown .= "<option value='".$cat->id."'>".$cat->name."</option>";
             //lấy các category con của 1 cha nào đó
-            $sub_category = Category::where(['parent_id'=>$cat->id])->get();
+            $sub_category = Category::where('isDelete', 0)->where(['parent_id'=>$cat->id])->get();
             foreach($sub_category as $sub_cat)
             {
                 // đưa category con vào option
@@ -141,7 +141,7 @@ class ProductController extends Controller
         }
 
         //lay ra 1 row
-        $productDetails = Product::where(['id'=>$id])->first();
+        $productDetails = Product::where('isDelete', 0)->where(['id'=>$id])->first();
 
         return view('admin.products.edit_product', compact('productDetails'));
     }
@@ -234,7 +234,7 @@ class ProductController extends Controller
     public function addAttributes(Request $request, $id = null)
     {
         //$productDetails = Product::where(['id'=>$id])->first();
-        $productDetails = Product::with('attributes')->where('id',$id)->first();
+        $productDetails = Product::where('isDelete', 0)->with('attributes')->where('id',$id)->first();
         if($request->isMethod('post'))
         {
             $data = $request->all();
@@ -297,8 +297,8 @@ class ProductController extends Controller
     // Product detail client
     public function products($id=null)
     {
-        $productDetails = Product::with('attributes')->where('id',$id)->first();
-        $featuredProducts = Product::where(['status' => 1, 'feature' => 1])->get();
+        $productDetails = Product::where('isDelete', 0)->with('attributes')->where('id',$id)->first();
+        $featuredProducts = Product::where('isDelete', 0)->where(['status' => 1, 'feature' => 1])->get();
 
         return view('fashi.product_details', compact('productDetails','featuredProducts'));
     }
@@ -314,12 +314,12 @@ class ProductController extends Controller
 
         ]);
 
-        $categories = Category::with('categories')->where(['parent_id'=>0])->get();
+        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
         // lay ra tat ca san pham cua 1 loai category
 
 
         $tukhoa = $request->tukhoa;
-        $products = Product::where('name','like',"%$tukhoa%")->paginate(4);
+        $products = Product::where('isDelete', 0)->where('name','like',"%$tukhoa%")->paginate(4);
         return view('fashi.products.timkiem', compact('tukhoa', 'products', 'categories'));
     }
 

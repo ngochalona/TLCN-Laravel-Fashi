@@ -20,7 +20,7 @@
                     <div id="{{$category->url}}" class="panel-collapse collapse in" >
                         <ul class="list-group">
                             @foreach ($category->categories as $subcat)
-                            @if ($subcat->status == 1)
+                                @if ($subcat->status == 1 && $subcat->isDelete == 0)
                                 <li  style="background-color: #FCF8E3 !important;" class="list-group-item">
                                     <a href="{{ url('/subcategories/'. $subcat->id)}}" style="color: #000000; text-decoration:none;font-family:Georgia">{{$subcat->name}}</a>
                                 </li>

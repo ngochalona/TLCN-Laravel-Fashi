@@ -21,7 +21,7 @@ class CategoryController extends Controller
             return redirect('/admin/view-categories')->with('flash_message_success','Category has been added successfully');
         }
         // lấy ra tất cả category cha
-        $levels = Category::where(['parent_id' => 0])->get();
+        $levels = Category::where('isDelete', 0)->where(['parent_id' => 0])->get();
         return view('admin.category.add_category', compact('levels'));
     }
 
@@ -46,7 +46,7 @@ class CategoryController extends Controller
         $categoryDetails = Category::where(['id'=>$id])->first();
 
         //lay ra tat ca category cha
-        $levels = Category::where(['parent_id'=>0])->get();
+        $levels = Category::where('isDelete', 0)->where(['parent_id'=>0])->get();
         return view('admin.category.edit_category', compact('levels','categoryDetails'));
     }
 

@@ -14,7 +14,7 @@ class IndexController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
             View::share('categoriess',$categoriess);
         });
 
@@ -22,13 +22,13 @@ class IndexController extends Controller
 
     public function index()
     {
-        $banners = Banners::where('status',1)->get();
-        $countBanners = Banners::where('status',1)->count();
+        $banners = Banners::where('isDelete', 0)->where('status',1)->get();
+        $countBanners = Banners::where('isDelete', 0)->where('status',1)->count();
 
-        $newProducts = Product::where(['status' => 1, 'new' => 1])->paginate(4);
-        $hotProducts = Product::where(['status' => 1, 'hot' => 1])->paginate(4);
+        $newProducts = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->paginate(4);
+        $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->paginate(4);
 
-        $categories = Category::with('categories')->where(['parent_id'=>0])->get();
+        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
 
 
         return view('fashi.index',compact('banners','newProducts','hotProducts','countBanners','categories'));
@@ -36,9 +36,9 @@ class IndexController extends Controller
 
     public function subcategories($id=null)
     {
-        $categories = Category::with('categories')->where(['parent_id'=>0])->get();
+        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
         // lay ra tat ca san pham cua 1 loai category
-        $products = Product::where(['status'=>1,'category_id' => $id])->get();
+        $products = Product::where('isDelete', 0)->where(['status'=>1,'category_id' => $id])->get();
         $category_name = Category::where(['id' => $id])->first();
 
         return view('fashi.subcategory',compact('products', 'categories', 'category_name'));
@@ -46,23 +46,23 @@ class IndexController extends Controller
 
     public function categories($id=null)
     {
-        $categories = Category::with('categories')->where(['parent_id'=>0])->get();
+        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
         // lay ra tat ca san pham cua 1 loai category
 
-        $subcats = Category::where(['status'=>1,'parent_id' => $id])->get();
+        $subcats = Category::where('isDelete', 0)->where(['status'=>1,'parent_id' => $id])->get();
 
         $category_name = Category::where(['id' => $id])->first();
         return view('fashi.category',compact('categories', 'subcats', 'category_name'));
     }
     public function home()
     {
-        $banners = Banners::where('status',1)->get();
-        $countBanners = Banners::where('status',1)->count();
+        $banners = Banners::where('isDelete', 0)->where('status',1)->get();
+        $countBanners = Banners::where('isDelete', 0)->where('status',1)->count();
 
-        $newProducts = Product::where(['status' => 1, 'new' => 1])->paginate(4);
-        $hotProducts = Product::where(['status' => 1, 'hot' => 1])->paginate(4);
+        $newProducts = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->paginate(4);
+        $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->paginate(4);
 
-        $categories = Category::with('categories')->where(['parent_id'=>0])->get();
+        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
 
 
         return view('fashi.index',compact('banners','newProducts','hotProducts','countBanners','categories'));

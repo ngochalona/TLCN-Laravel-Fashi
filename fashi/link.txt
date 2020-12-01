@@ -11,8 +11,10 @@ cb làm invoice
 
 làm invoice và duyệt đơn
 xóa mềm
+goi y coupon hien tai
 làm edit khuyến mãi
 làm tỉnh thành
 
 khi client show bất kì cái j thì phải kt có isDelete k
 
+không tắt đc sp theo subcat mà cat parent bị delete

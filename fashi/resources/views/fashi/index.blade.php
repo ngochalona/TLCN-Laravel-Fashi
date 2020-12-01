@@ -10,7 +10,8 @@
     <!-- Indicators -->
     <ol class="carousel-indicators">
     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-<?php for($i=1; $i<= $countBanners; $i++) {?>
+        <?php /** @var TYPE_NAME $countBanners */
+        for($i=1; $i<= $countBanners; $i++) {?>
     <li data-target="#myCarousel" data-slide-to="{!!$i!!}"></li>
 <?php } ?>
     </ol>
@@ -74,7 +75,7 @@
                     <div id="{{$category->url}}" class="panel-collapse collapse in" >
                         <ul class="list-group">
                             @foreach ($category->categories as $subcat)
-                            @if ($subcat->status == 1)
+                            @if ($subcat->status == 1 && $subcat->isDelete == 0)
                                 <li  style="background-color: #FCF8E3 !important;" class="list-group-item">
                                     <a href="{{ url('/subcategories/'. $subcat->id)}}" style="color: #000000; text-decoration:none;font-family:Georgia;">{{$subcat->name}}</a>
                                 </li>
@@ -115,6 +116,10 @@
             <div class="row">
                 @if (!empty($newProducts))
                     @foreach ($newProducts as $product)
+                        <?php /** @var TYPE_NAME $product */
+                        $cat_id = DB::table('categories')->where('id', $product->category_id)->get();
+                        if($cat_id[0]->isDelete == 0){
+                        ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="card">
                                 <a href="{{ url('/product/'.$product->id)}}">
@@ -125,6 +130,7 @@
                                 <p><a href="{{ url('/product/'.$product->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">Xem chi tiết</a></p>
                             </div>
                         </div>
+                        <?php  } ?>
                     @endforeach
                 @endif
             </div>
@@ -153,6 +159,9 @@
             <div class="row">
                 @if (!empty($hotProducts))
                     @foreach ($hotProducts as $product)
+                        <?php $cat_id = DB::table('categories')->where('id', $product->category_id)->get();
+                        if($cat_id[0]->isDelete == 0){
+                            ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="card">
                                 <a href="{{ url('/product/'.$product->id)}}">
@@ -163,6 +172,7 @@
                                 <p><a href="{{ url('/product/'.$product->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">Xem chi tiết</a></p>
                             </div>
                         </div>
+                        <?php } ?>
                     @endforeach
                 @endif
             </div>
@@ -174,11 +184,6 @@
     </div>
 
     <!-- ----------------------hết sp -------------------------------->
-    </div>
-
-
-
-</div>
 @endsection
 
 

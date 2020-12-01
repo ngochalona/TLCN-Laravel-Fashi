@@ -93,7 +93,12 @@
                             <div class="discount-coupon">
                                 <h6 style="font-size: 16px;">Nhập mã giảm giá</h6>
                                 <form action="{{url('/cart/apply-coupon')}}" method="post" class="coupon-form">{{csrf_field()}}
-                                    <input type="text" placeholder="Enter your codes" name="coupon_code">
+                                    <select name="coupon_code" id="" style=" width: 100%;height: 40px;padding: 5px;border: #d5d3d3 solid 2px;">
+                                        <option value="">Enter your codes</option>
+                                        @foreach($coupons as $coupon)
+                                            <option value="{{ $coupon->coupon_code }}">{{ $coupon->coupon_code }}</option>
+                                        @endforeach
+                                    </select>
                                     <button type="submit" class="site-btn coupon-btn" style="font-size: 14px;  text-transform: uppercase;">Áp dụng</button>
                                 </form>
                             </div>

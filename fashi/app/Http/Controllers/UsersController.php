@@ -18,7 +18,7 @@ class UsersController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
             View::share('categoriess',$categoriess);
         });
 
