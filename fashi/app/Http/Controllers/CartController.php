@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\OrdersDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
@@ -205,9 +206,6 @@ class CartController extends Controller
         $user_id = Auth::user()->id;
         $user_email = Auth::user()->email;
 
-        // tim thong tin cua user dang login
-        $userDetails = User::find($user_id);
-
         //Update table cart with email
         // $session_id = Session::get('session_id');        //session hien dang mua hang
         // DB::table('cart')->where(['session_id' => $session_id])->update(['user_email' => $user_email]);
@@ -268,6 +266,7 @@ class CartController extends Controller
                 $coupon_amount = Session::get('CouponAmount');
             }
 
+            // Add vào orders
             $order = new Order;
             $order->user_id = $user_id;
             $order->user_email = $user_email;
@@ -286,11 +285,29 @@ class CartController extends Controller
 
             $order_id = DB::getPdo()->lastinsertID();
 
+            // Add vào orderDetails
+            $cartProducts = DB::table('cart')->where(['user_email' => $user_email])->orWhere('session_id', $session_id)->get();
+            foreach($cartProducts as $pro)
+            {
+                $cartPro = new OrdersDetails;// bảng orderDetails
+                $cartPro->order_id = $order_id;
+                $cartPro->user_id = $user_id;
+                $cartPro->product_id = $pro->product_id;
+                $cartPro->product_code = $pro->product_code;
+                $cartPro->product_name = $pro->product_name;
+                $cartPro->product_size = $pro->size;
+                $cartPro->product_price = $pro->price;
+                $cartPro->product_qty = $pro->quantity;
+                $cartPro->save();
+            }
+
             Session::put('order_id', $order_id);
             Session::put('grand_total', $data['grand_total']);
 
+
             if($data['payment_method'] == "cod")
             {
+                // Gửi mail invoice
                 $productDetails = Order::with('orders')->where('id', $order_id)->first();
                 $productDetails= json_decode(json_encode($productDetails), true);
 
@@ -302,11 +319,11 @@ class CartController extends Controller
                 $messageData = [
                     'email' => $email,
                     'name' => $data['billing_name'],
-                    'order' => $order_id,
+                    'order_id' => $order_id,
                     'productDetails' => $productDetails,
                     'userDetails' => $userDetails,
                 ];
-                Mail::send('fashi.email.cod', $messageData, function ($message) use($email) {
+                Mail::send('fashi.email.invoice', $messageData, function ($message) use($email) {
                     $message->to($email);
                     $message->subject('Đơn hàng đã đặt tại Fashi');
                 });
@@ -354,25 +371,25 @@ class CartController extends Controller
                 'source' => $token,
             ]);
 
-            // xuat bill
-            $cartProducts = DB::table('cart')->where(['user_email' => $user_email])->orWhere('session_id', $session_id)->get();
-
-            foreach($cartProducts as $pro)
-            {
-                $cartPro = new Bill;
-                $cartPro->order_id = $order_id;
-                $cartPro->user_id = $user_id;
-                $cartPro->product_id = $pro->product_id;
-                $cartPro->product_code = $pro->product_code;
-                $cartPro->product_name = $pro->product_name;
-                $cartPro->product_size = $pro->size;
-                $cartPro->product_price = $pro->price;
-                $cartPro->product_qty = $pro->quantity;
-                $cartPro->save();
-                $getStock = ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->first();
-                $stock = $getStock->stock;
-                ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->update(['stock' => $stock - $pro->quantity]);
-            }
+//            // xuat bill
+//            $cartProducts = DB::table('cart')->where(['user_email' => $user_email])->orWhere('session_id', $session_id)->get();
+//
+//            foreach($cartProducts as $pro)
+//            {
+//                $cartPro = new Bill;
+//                $cartPro->order_id = $order_id;
+//                $cartPro->user_id = $user_id;
+//                $cartPro->product_id = $pro->product_id;
+//                $cartPro->product_code = $pro->product_code;
+//                $cartPro->product_name = $pro->product_name;
+//                $cartPro->product_size = $pro->size;
+//                $cartPro->product_price = $pro->price;
+//                $cartPro->product_qty = $pro->quantity;
+//                $cartPro->save();
+//                $getStock = ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->first();
+//                $stock = $getStock->stock;
+//                ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->update(['stock' => $stock - $pro->quantity]);
+//            }
 
 
             DB::table('cart')->where('user_email', $user_email)->orWhere('session_id', $session_id)->delete();

@@ -10,8 +10,8 @@ cb làm invoice
 
 
 làm invoice và duyệt đơn
-xóa mềm
-goi y coupon hien tai
+xóa mềm-----------
+goi y coupon hien tai------------
 làm edit khuyến mãi
 làm tỉnh thành
 
