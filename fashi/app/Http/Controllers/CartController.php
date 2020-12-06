@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BillsDetails;
 use App\OrdersDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -247,8 +248,6 @@ class CartController extends Controller
             ,'city'=>$data['billing_city'],'state'=>$data['billing_state']
             ,'ward'=>$data['billing_ward'],'mobile'=>$data['billing_mobile']]);
 
-
-
             if(empty(Session::get('CouponCode')))
             {
                 $coupon_code = 'Not Used';
@@ -353,13 +352,13 @@ class CartController extends Controller
     {
         $session_id = Session::get('session_id');
         $user_email = Auth::user()->email;
+        $user_name = Auth::user()->name;
         $user_id = Auth::user()->id;
 
         if($request->isMethod('post'))
         {
             $data = $request->all();
             $order_id = $data['order_id'];
-
             \Stripe\Stripe::setApiKey('sk_test_51GwoihIJzgT2zuf5dJRQDgv7iMZJrQuuPi9Fc1B7XzidaeHZmvsXzz91lKZLUWrbAtZKcFYiDUmF6ddBiEZkuFAx00d4X8uw3Y');
 
             $token = $_POST['stripeToken'];
@@ -371,28 +370,88 @@ class CartController extends Controller
                 'source' => $token,
             ]);
 
-//            // xuat bill
-//            $cartProducts = DB::table('cart')->where(['user_email' => $user_email])->orWhere('session_id', $session_id)->get();
-//
-//            foreach($cartProducts as $pro)
-//            {
-//                $cartPro = new Bill;
-//                $cartPro->order_id = $order_id;
-//                $cartPro->user_id = $user_id;
-//                $cartPro->product_id = $pro->product_id;
-//                $cartPro->product_code = $pro->product_code;
-//                $cartPro->product_name = $pro->product_name;
-//                $cartPro->product_size = $pro->size;
-//                $cartPro->product_price = $pro->price;
-//                $cartPro->product_qty = $pro->quantity;
-//                $cartPro->save();
-//                $getStock = ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->first();
-//                $stock = $getStock->stock;
-//                ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->update(['stock' => $stock - $pro->quantity]);
-//            }
+            // Get coupon
+            if(empty(Session::get('CouponCode')))
+            {
+                $coupon_code = 'Not Used';
+            }
+            else
+            {
+                $coupon_code = Session::get('CouponCode');
+            }
+            if(empty(Session::get('CouponAmount')))
+            {
+                $coupon_amount = '0';
+            }
+            else
+            {
+                $coupon_amount = Session::get('CouponAmount');
+            }
 
+            // Add vào bill
+            $order = Order::where(['id' => $order_id])->first();
+            $bill = new Bill;
+            $bill->user_id = $user_id;
+            $bill->user_email = $user_email;
+            $bill->name = $order->name;
+            $bill->address = $order->address;
+            $bill->city = $order->city;
+            $bill->state = $order->state;
+            $bill->ward = $order->ward;
+            $bill->mobile = $order->mobile;
+            $bill->coupon_code = $coupon_code;
+            $bill->coupon_amount = $coupon_amount;
+            $bill->payment_method = $order->payment_method;
+            $bill->grand_total = $order->grand_total;
+            $bill->save();
 
+            $bill_id = DB::getPdo()->lastinsertID();
+
+            // Add vào billDetails
+            $cartProducts = DB::table('cart')->where(['user_email' => $user_email])->orWhere('session_id', $session_id)->get();
+            foreach($cartProducts as $pro)
+            {
+                $cartPro = new BillsDetails;// bảng orderDetails
+                $cartPro->bill_id = $bill_id;
+                $cartPro->user_id = $user_id;
+                $cartPro->product_id = $pro->product_id;
+                $cartPro->product_code = $pro->product_code;
+                $cartPro->product_name = $pro->product_name;
+                $cartPro->product_size = $pro->size;
+                $cartPro->product_price = $pro->price;
+                $cartPro->product_qty = $pro->quantity;
+                $cartPro->save();
+                $getStock = ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->first();
+                $stock = $getStock->stock;
+                ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->update(['stock' => $stock - $pro->quantity]);
+            }
+
+            // Trừ hàng trong kho
             DB::table('cart')->where('user_email', $user_email)->orWhere('session_id', $session_id)->delete();
+
+            // Duyệt trạng thái đã thanh toán trong bảng order
+            Order::where('id', $order_id)->update(['order_status' => 'Đã thanh toán']);
+
+            // Gửi mail invoice
+            $productDetails = Order::with('orders')->where('id', $order_id)->first();
+            $productDetails= json_decode(json_encode($productDetails), true);
+
+            $userDetails = User::where('id', $user_id)->first();
+            $userDetails= json_decode(json_encode($userDetails), true);
+
+            // Gửi email
+            $email = $user_email;
+            $messageData = [
+                'email' => $email,
+                'name' => $user_name,
+                'order_id' => $order_id,
+                'productDetails' => $productDetails,
+                'userDetails' => $userDetails,
+            ];
+            Mail::send('fashi.email.invoice', $messageData, function ($message) use($email) {
+                $message->to($email);
+                $message->subject('Đơn hàng đã đặt tại Fashi');
+            });
 
             return redirect()->back()->with('flash_message_success','Your Payment Successfully Done!');
         }

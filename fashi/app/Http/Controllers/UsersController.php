@@ -101,8 +101,6 @@ class UsersController extends Controller
             });
             return redirect()->back()->with('flash_message_error', 'Kích hoạt tài khoản trong email của bạn. ');
 
-
-
             if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
             {
                 Session::put('frontSession',$data['email']);
