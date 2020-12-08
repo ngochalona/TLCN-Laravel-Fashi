@@ -22,8 +22,8 @@
             <div class="row mb-4">
                 <div class="col-sm-12">
                     Xin chào {{ $name }}, <br>
-                    Địa chỉ: {{ $userDetails['address'] }}, {{ $userDetails['ward'] }}, {{ $userDetails['state'] }}, {{ $userDetails['city'] }}
-                    Số điện thoại: {{ $userDetails['mobile'] }}
+                    Địa chỉ: {{ $userDetails['address'] }}, {{ $userDetails['ward'] }}, {{ $userDetails['state'] }}, {{ $userDetails['city'] }}<br>
+                    Số điện thoại: {{ $userDetails['mobile'] }}<br>
                     Cảm ơn bạn đã đặt hàng tại Fashi shop. Chi tiết đơn hàng của bạn dưới đây.
                 </div>
             </div>

@@ -36,7 +36,7 @@ class CartController extends Controller
     public function addtoCart(Request $request)
     {
         Session::forget('CouponAmount');
-        Session::forget('coupon_code');
+        Session::forget('CouponCode');
 
         $data = $request->all();
 
@@ -123,7 +123,7 @@ class CartController extends Controller
     public function deleteCartProduct($id=null)
     {
         Session::forget('CouponAmount');
-        Session::forget('coupon_code');
+        Session::forget('CouponCode');
 
         DB::table('cart')->where('id',$id)->delete();
         return redirect('/cart')->with('flash_message_error','Product has been deleted in cart');
@@ -132,7 +132,7 @@ class CartController extends Controller
     public function applyCoupon(Request $request)
     {
         Session::forget('CouponAmount');
-        Session::forget('coupon_code');
+        Session::forget('CouponCode');
         if($request->isMethod('post'))
         {
             $data = $request->all();
@@ -277,7 +277,7 @@ class CartController extends Controller
             $order->mobile = $data['billing_mobile'];
             $order->coupon_code = $coupon_code;
             $order->coupon_amount = $coupon_amount;
-            $order->order_status = "New";
+            $order->order_status = "Đang xử lý";
             $order->payment_method = $data['payment_method'];
             $order->grand_total = $data['grand_total'];
             $order->save();
@@ -345,6 +345,11 @@ class CartController extends Controller
         // sau khi thanh toan xong thi xoa sp trong cart
         $user_email = Auth::user()->email;
         DB::table('cart')->where('user_email', $user_email)->orWhere('session_id', $session_id)->delete();
+
+        // Xóa session coupon sau khi đã đặt hàng xong
+        Session::forget('CouponAmount');
+        Session::forget('CouponCode');
+
         return view('fashi.orders.thanks');
     }
 
@@ -370,24 +375,6 @@ class CartController extends Controller
                 'source' => $token,
             ]);
 
-            // Get coupon
-            if(empty(Session::get('CouponCode')))
-            {
-                $coupon_code = 'Not Used';
-            }
-            else
-            {
-                $coupon_code = Session::get('CouponCode');
-            }
-            if(empty(Session::get('CouponAmount')))
-            {
-                $coupon_amount = '0';
-            }
-            else
-            {
-                $coupon_amount = Session::get('CouponAmount');
-            }
-
             // Add vào bill
             $order = Order::where(['id' => $order_id])->first();
             $bill = new Bill;
@@ -399,8 +386,8 @@ class CartController extends Controller
             $bill->state = $order->state;
             $bill->ward = $order->ward;
             $bill->mobile = $order->mobile;
-            $bill->coupon_code = $coupon_code;
-            $bill->coupon_amount = $coupon_amount;
+            $bill->coupon_code = $order->coupon_code;
+            $bill->coupon_amount = $order->coupon_amount;
             $bill->payment_method = $order->payment_method;
             $bill->grand_total = $order->grand_total;
             $bill->save();
@@ -452,7 +439,9 @@ class CartController extends Controller
                 $message->to($email);
                 $message->subject('Đơn hàng đã đặt tại Fashi');
             });
-
+            // Xóa session coupon sau khi đã đặt hàng xong
+            Session::forget('CouponAmount');
+            Session::forget('CouponCode');
             return redirect()->back()->with('flash_message_success','Your Payment Successfully Done!');
         }
         return view('fashi.orders.stripe');

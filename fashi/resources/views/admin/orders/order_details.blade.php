@@ -120,10 +120,6 @@
                                 <td class="taskStatus">{{$orderDetails->country}}</td>
                             </tr>
                             <tr>
-                                <td class="taskDesc">Country Code</td>
-                                <td class="taskStatus">{{$orderDetails->pincode}}</td>
-                            </tr>
-                            <tr>
                                 <td class="taskDesc">Mobile</td>
                                 <td class="taskStatus">{{$orderDetails->mobile}}</td>
                             </tr>
@@ -181,22 +177,22 @@
                    <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
                    <form action="{{url('/admin/update-order-status')}}" method="post">{{csrf_field()}}
                         <input type="hidden" name="order_id" id="" value="{{$orderDetails->id}}">
+                       <input type="hidden" name="user_id" id="" value="{{$orderDetails->user_id}}">
+                       <input type="hidden" name="user_email" id="" value="{{$orderDetails->user_email}}">
                         <table style="width: 100%">
                             <tr>
                                 <td>
                                     <select name="order_status" id="order_status" class="form-control">
-                                        <option value="New" @if ($orderDetails->order_status == "New") selected @endif>New</option>
-                                        <option value="Pending" @if ($orderDetails->order_status == "Pending") selected @endif>Pending</option>
-                                        <option value="In Process" @if ($orderDetails->order_status == "In Process") selected @endif>In Process</option>
-                                        <option value="Shipped" @if ($orderDetails->order_status == "Shipped") selected @endif>Shipped</option>
-                                        <option value="Delivered" @if ($orderDetails->order_status == "Delivered") selected @endif>Delivered</option>
-                                        <option value="Cancelled" @if ($orderDetails->order_status == "Cancelled") selected @endif>Cancelled</option>
-                                        <option value="Paid" @if ($orderDetails->order_status == "Paid") selected @endif>Paid</option>
+                                        <option value="Đang xử lý" @if ($orderDetails->order_status == "Đang xử lý") selected @endif>Đang xử lý</option>
+                                        <option value="Đang giao" @if ($orderDetails->order_status == "Đang giao") selected @endif>Đang giao</option>
+                                        <option value="Hủy đơn" @if ($orderDetails->order_status == "Hủy đơn") selected @endif>Hủy đơn</option>
+                                        <option value="Đã thanh toán" @if ($orderDetails->order_status == "Đã thanh toán") selected @endif>Đã thanh toán</option>
 
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="submit" value="Update Status" class="btn btn-sm btn-success">
+                                    <input type="submit" value="Update Status" class="btn btn-sm btn-success"
+                                           onclick="return confirm('Bạn chắc chắn muốn thay đổi trạng thái đơn hàng?');">
                                 </td>
                             </tr>
                         </table>
@@ -241,10 +237,6 @@
                             <tr>
                                 <td class="taskDesc">Country</td>
                                 <td class="taskStatus">{{$orderDetails->country}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">Country Code</td>
-                                <td class="taskStatus">{{$orderDetails->pincode}}</td>
                             </tr>
                             <tr>
                                 <td class="taskDesc">Mobile</td>
