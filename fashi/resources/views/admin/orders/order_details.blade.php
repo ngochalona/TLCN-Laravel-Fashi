@@ -37,7 +37,7 @@
                 <div class="panel-heading">
                    <div class="btn-group" id="buttonexport">
                       <a href="#">
-                         <h4>Orders Details</h4>
+                         <h4>Chi tiết đơn hàng</h4>
                       </a>
                    </div>
                 </div>
@@ -50,31 +50,31 @@
 
                          <tbody>
                              <tr>
-                                 <td class="taskDesc">Order Date</td>
+                                 <td class="taskDesc">Ngày đặt</td>
                                  <td class="taskStatus">{{$orderDetails->created_at->format('Y-m-d')}}</td>
                              </tr>
                              <tr>
-                                <td class="taskDesc">Order Status</td>
+                                <td class="taskDesc">Trạng thái</td>
                                 <td class="taskStatus">{{$orderDetails->order_status}}</td>
                             </tr>
                             <tr>
-                                <td class="taskDesc">Order Total</td>
+                                <td class="taskDesc">Tổng tiền</td>
                                 <td class="taskStatus">{{$orderDetails->grand_total}}</td>
                             </tr>
                             <tr>
-                                <td class="taskDesc">Shipping Charges</td>
+                                <td class="taskDesc">Phí vận chuyển</td>
                                 <td class="taskStatus">{{$orderDetails->shipping_charges}}</td>
                             </tr>
                             <tr>
-                                <td class="taskDesc">Coupon Code</td>
+                                <td class="taskDesc">Mã giảm giá</td>
                                 <td class="taskStatus">{{$orderDetails->coupon_code}}</td>
                             </tr>
                             <tr>
-                                <td class="taskDesc">Coupon Amount</td>
+                                <td class="taskDesc">Tiền giảm</td>
                                 <td class="taskStatus">{{$orderDetails->coupon_amount}}</td>
                             </tr>
                             <tr>
-                                <td class="taskDesc">Payment Method</td>
+                                <td class="taskDesc">Phương thức thanh toán</td>
                                 <td class="taskStatus">{{$orderDetails->payment_method}}</td>
                             </tr>
                          </tbody>
@@ -82,92 +82,57 @@
                    </div>
                 </div>
              </div>
-
-             <div class="panel panel-bd lobidrag">
-                <div class="panel-heading">
-                   <div class="btn-group" id="buttonexport">
-                      <a href="#">
-                         <h4>Billing Address</h4>
-                      </a>
-                   </div>
-                </div>
-                <div class="panel-body">
-                <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
-
-                   <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
-                   <div class="table-responsive">
-                      <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
-
-                         <tbody>
-                             <tr>
-                                 <td class="taskDesc">Name</td>
-                                 <td class="taskStatus">{{$orderDetails->name}}</td>
-                             </tr>
-                             <tr>
-                                <td class="taskDesc">Address</td>
-                                <td class="taskStatus">{{$orderDetails->address}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">City</td>
-                                <td class="taskStatus">{{$orderDetails->city}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">State</td>
-                                <td class="taskStatus">{{$orderDetails->state}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">Country</td>
-                                <td class="taskStatus">{{$orderDetails->country}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">Mobile</td>
-                                <td class="taskStatus">{{$orderDetails->mobile}}</td>
-                            </tr>
-                         </tbody>
-                      </table>
-                   </div>
-                </div>
-             </div>
-         </div>
-
+          </div>
 
           <div class="col-sm-6">
-            <div class="panel panel-bd lobidrag">
-               <div class="panel-heading">
-                  <div class="btn-group" id="buttonexport">
-                     <a href="#">
-                        <h4>Customers Details</h4>
-                     </a>
+
+              <div class="panel panel-bd lobidrag">
+                  <div class="panel-heading">
+                      <div class="btn-group" id="buttonexport">
+                          <a href="#">
+                              <h4>Thông tin khách hàng</h4>
+                          </a>
+                      </div>
                   </div>
-               </div>
-               <div class="panel-body">
-               <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                  <div class="panel-body">
+                      <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
 
-                  <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
-                  <div class="table-responsive">
-                     <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+                      <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                      <div class="table-responsive">
+                          <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
 
-                        <tbody>
-                            <tr>
-                                <td class="taskDesc">Customer Name</td>
-                                <td class="taskStatus">{{$orderDetails->name}}</td>
-                            </tr>
-                            <tr>
-                               <td class="taskDesc">Customer Email</td>
-                               <td class="taskStatus">{{$orderDetails->user_email}}</td>
-                           </tr>
-
-                     </table>
+                              <tbody>
+                              <tr>
+                                  <td class="taskDesc">Họ và tên</td>
+                                  <td class="taskStatus">{{$orderDetails->name}}</td>
+                              </tr>
+                              <tr>
+                                  <td class="taskDesc">Địa chỉ</td>
+                                  <td class="taskStatus">
+                                      {{$orderDetails->address}},
+                                      {{$orderDetails->ward}},
+                                      {{$orderDetails->state}},
+                                      {{$orderDetails->city}}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td class="taskDesc">Số điện thoại</td>
+                                  <td class="taskStatus">{{$orderDetails->mobile}}</td>
+                              </tr>
+                              <tr>
+                                  <td class="taskDesc">Email</td>
+                                  <td class="taskStatus">{{$orderDetails->user_email}}</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
                   </div>
-               </div>
-            </div>
-
-
+              </div>
             <div class="panel panel-bd lobidrag">
                 <div class="panel-heading">
                    <div class="btn-group" id="buttonexport">
                       <a href="#">
-                         <h4>Shipping Details</h4>
+                         <h4>Cập nhật trạng thái</h4>
                       </a>
                    </div>
                 </div>
@@ -202,51 +167,6 @@
                 </div>
              </div>
 
-             <div class="panel panel-bd lobidrag">
-                <div class="panel-heading">
-                   <div class="btn-group" id="buttonexport">
-                      <a href="#">
-                         <h4>Shipping Address</h4>
-                      </a>
-                   </div>
-                </div>
-                <div class="panel-body">
-                <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
-
-                   <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
-                   <div class="table-responsive">
-                      <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
-
-                         <tbody>
-                             <tr>
-                                 <td class="taskDesc">Name</td>
-                                 <td class="taskStatus">{{$orderDetails->name}}</td>
-                             </tr>
-                             <tr>
-                                <td class="taskDesc">Address</td>
-                                <td class="taskStatus">{{$orderDetails->address}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">City</td>
-                                <td class="taskStatus">{{$orderDetails->city}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">State</td>
-                                <td class="taskStatus">{{$orderDetails->state}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">Country</td>
-                                <td class="taskStatus">{{$orderDetails->country}}</td>
-                            </tr>
-                            <tr>
-                                <td class="taskDesc">Mobile</td>
-                                <td class="taskStatus">{{$orderDetails->mobile}}</td>
-                            </tr>
-                         </tbody>
-                      </table>
-                   </div>
-                </div>
-             </div>
 
 
           </div>
@@ -260,7 +180,7 @@
                     <div class="panel-heading">
                        <div class="btn-group" id="buttonexport">
                           <a href="#">
-                             <h4>Ordered Products</h4>
+                             <h4>Sản phẩm đã đặt</h4>
                           </a>
                        </div>
                     </div>
@@ -272,11 +192,11 @@
                           <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
 
                             <thead>
-                                <th>Product Code</th>
-                                <th>Product Name</th>
-                                <th>Product Size</th>
-                                <th>Product Price</th>
-                                <th>Product Quantity</th>
+                                <th>Mã</th>
+                                <th>Sản phẩm</th>
+                                <th>Size</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
                             </thead>
                              <tbody>
                                 @foreach ($orderDetails->orders as $pro)

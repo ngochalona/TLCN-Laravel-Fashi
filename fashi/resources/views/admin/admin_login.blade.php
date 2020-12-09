@@ -65,12 +65,10 @@
                             <div class="form-group">
                                 <label class="control-label" for="username">Username</label>
                                 <input type="text" title="Please enter your email" required="" value="" name="username" id="username" class="form-control">
-                                <span class="help-block small">Your unique email to app</span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="password">Password</label>
                                 <input type="password" title="Please enter your password" placeholder="******" required="" value="" name="password" id="password" class="form-control">
-                                <span class="help-block small">Your strong password</span>
                             </div>
                             <div>
                                 <button class="btn btn-add">Login</button>
