@@ -73,6 +73,7 @@
                                <th>Code</th>
                                <th>Ảnh</th>
                                <th>Giá</th>
+                               <th>Giá giảm</th>
                                <th>Trạng thái</th>
                             </tr>
                          </thead>
@@ -89,7 +90,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $product->price }}</td>
-
+                                    <td>{{ $product->discounted_price }}</td>
                                     <td>
                                         <button onclick="restore({{$product->id}})" type="button" class="buttonupdate" id="{{$product->id}}-status"
                                             >

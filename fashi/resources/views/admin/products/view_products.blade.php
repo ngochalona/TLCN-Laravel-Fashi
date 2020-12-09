@@ -60,8 +60,13 @@
                        <a class="btn btn-add" href="{{ url('/admin/restore-product') }}"> <i class="fa fa-plus"></i> Khôi phục
                        </a>
                     </div>
-
-                 </div>
+                   </div>
+                    <div class="btn-group">
+                        <div class="buttonexport" id="buttonlist">
+                            <a class="btn btn-add" href="{{ url('/admin/discounted-price') }}"> <i class="fa fa-plus"></i> Nhập giá giảm
+                            </a>
+                        </div>
+                    </div>
                    <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
                    <div class="table-responsive">
                       <table id="table_id" class="table table-bordered table-striped table-hover">
@@ -73,6 +78,7 @@
                                <th>Code</th>
                                <th>Ảnh</th>
                                <th>Giá</th>
+                               <th>Giá giảm</th>
                                <th>Trạng thái</th>
                                <th>Featured</th>
                                <th>Hot</th>
@@ -93,7 +99,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $product->price }}</td>
-
+                                    <td>{{ $product->discounted_price }}</td>
                                     <td>
                                         <button onclick="updateStatus({{$product->id}})" type="button" class="buttonupdate" id="{{$product->id}}-status"
                                             >

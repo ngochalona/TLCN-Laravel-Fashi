@@ -53,7 +53,7 @@
                         <input type="hidden" value="size" id="showStock">
                         <input type="hidden" value="{{$productDetails->name}}" name="product_name">
                         <input type="hidden" value="{{$productDetails->code}}" name="product_code">
-                        <input type="hidden" id="price" value="{{$productDetails->price}}" name="price">
+                        <input type="hidden" id="price" value="{{$productDetails->discounted_price}}" name="price">
                         <div class="pd-title">
                             <h3>{{$productDetails->name}}</h3>
                             <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
@@ -61,7 +61,7 @@
 
                         <div class="pd-desc">
                             <p>{!! $productDetails->description !!}</p>
-                            <h4 id="getPrice">Giá: ${{$productDetails->price}} <span>629.99</span></h4>
+                            <h4 id="getPrice">Giá: {{$productDetails->discounted_price}} VND<span>{{$productDetails->price}} VND</span></h4>
                         </div>
 
                         <div class="form-group">
@@ -102,7 +102,7 @@
                                     <img src="uploads/products/{{ $product->image }}" alt="Denim Jeans" style="width:100%">
                                 </a>
                                 <h5>{{ $product->name }}</h5>
-                                <p class="price">${{ $product->price }}</p>
+                                <p class="price">${{ $product->discounted_price }}</p>
                                 <p><a href="{{ url('/product/'.$product->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">Xem chi tiết</a></p>
                             </div>
                         </div>
@@ -110,6 +110,5 @@
                 @endif
             </div>
         </div>
-        <!-- end related product -->
-    </div>
+
 @endsection

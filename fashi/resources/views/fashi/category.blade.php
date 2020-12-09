@@ -90,7 +90,7 @@
                                                     <img src="uploads/products/{{ $productsInSubcate->image }}" alt="Denim Jeans" style="width:100%">
                                                 </a>
                                                 <h5>{{ $productsInSubcate->name }}</h5>
-                                                <p class="price">${{ $productsInSubcate->price }}</p>
+                                                <p class="price">${{ $productsInSubcate->discounted_price }}</p>
                                                 <p><a href="{{ url('/product/'.$productsInSubcate->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">Xem chi tiết</a></p>
                                             </div>
                                         </div>

@@ -90,11 +90,14 @@ Route::group(['middleware' => ['AdminLogin']], function () {
     Route::match(['get', 'post'], '/admin/view-products', 'ProductController@viewProducts');
     Route::match(['get', 'post'], '/admin/edit-product/{id}', 'ProductController@editProduct');
     Route::match(['get', 'post'], '/admin/delete-product/{id}', 'ProductController@deleteProduct');
+    Route::match(['get', 'post'], '/admin/discounted-price', 'ProductController@viewDiscountedPrice');
+    Route::get('admin/discounted-price-product/{id}/{disPrice}', 'ProductController@discountedPrice' );
     Route::get('admin/restore-product-status/{id}', 'ProductController@restoreStatus' );
     Route::get('admin/update-product-status/{id}', 'ProductController@updateStatus' );
     Route::get('admin/update-feature-product-status/{id}', 'ProductController@updateFeature' );
     Route::get('admin/update-hot-product-status/{id}', 'ProductController@updateHot' );
     Route::get('admin/update-new-product-status/{id}', 'ProductController@updateNew' );
+
 
     //Route::post('/admin/update-product-status','ProductController@updateStatusNew');
 

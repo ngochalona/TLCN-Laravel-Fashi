@@ -49,6 +49,7 @@ class ProductController extends Controller
                 $product->description = '';
             }
             $product->price = $data['product_price'];
+            $product->discounted_price = $data['product_price'];
 
             //upload image
             if($request->hasFile('image'))  //nếu có file hình
@@ -135,7 +136,7 @@ class ProductController extends Controller
 
             Product::where(['id'=>$id])->update(['name'=>$data['product_name'],
             'code'=>$data['product_code'], 'description'=>$data['product_description'],
-            'price'=>$data['product_price'],'image'=>$filename]);
+            'price'=>$data['product_price'],'discounted_price'=>$data['product_price'],'image'=>$filename]);
 
             return redirect('/admin/view-products')->with('flash_message_success','Product has been updated ');
         }
@@ -344,5 +345,20 @@ class ProductController extends Controller
     {
         Product::where('id', $id)->update(['isDelete' => 0]);
         echo "Unactive";
+    }
+
+    // Hiện trang chỉnh sửa giá giảm
+    public function viewDiscountedPrice()
+    {
+        $products = Product::where('isDelete', 0)->get();
+        return view('admin.products.discounted_price',compact('products'));
+    }
+
+    // Cập nhật giá giảm
+    // Khôi phục dữ liệu
+    public function discountedPrice($id=null, $disPrice)
+    {
+        Product::where('id', $id)->update(['discounted_price' => $disPrice]);
+        echo $disPrice;
     }
 }

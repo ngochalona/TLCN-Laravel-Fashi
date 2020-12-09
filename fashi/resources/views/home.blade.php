@@ -127,7 +127,7 @@
                                     <img src="uploads/products/{{ $product->image }}" alt="Denim Jeans" style="width:100%">
                                 </a>
                                 <h5>{{ $product->name }}</h5>
-                                <p class="price">${{ $product->price }}</p>
+                                <p class="price">${{ $product->discounted_price }}</p>
                                 <p><a style="color: black; ">Add to Cart</a></p>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                                     <img src="uploads/products/{{ $product->image }}" alt="Denim Jeans" style="width:100%">
                                 </a>
                                 <h5>{{ $product->name }}</h5>
-                                <p class="price">${{ $product->price }}</p>
+                                <p class="price">${{ $product->discounted_price }}</p>
                                 <p><button>Add to Cart</button></p>
                             </div>
                         </div>
