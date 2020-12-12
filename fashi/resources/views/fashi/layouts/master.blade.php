@@ -81,6 +81,14 @@
                 //alert("check");
             }
         }
+
+
+
+
+
+
+
+
     </script>
     @yield('script')
 </body>

@@ -94,8 +94,8 @@
                 </div>
             </div>
             <div class="row">
-                @if (!empty($featuredProducts))
-                    @foreach ($featuredProducts as $product)
+                @if (!empty($relatedProducts))
+                    @foreach ($relatedProducts as $product)
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                             <div class="card">
                                 <a href="{{ url('/product/'.$product->id)}}">

@@ -174,25 +174,6 @@ class ProductController extends Controller
         }
     }
 
-    // Admin update featured product
-    public function updateFeature($id=null)
-    {
-        $data = Product::where('id', $id)->first();;
-        $curentStatus = $data['feature'];
-
-
-        if($curentStatus == 1)
-        {
-            Product::where('id', $id)->update(['feature' => 0]);
-            echo "Ẩn";
-        }
-        if($curentStatus == 0)
-        {
-            Product::where('id', $id)->update(['feature' => 1]);
-            echo "Hiện";
-        }
-    }
-
     // Admin update hot product
     public function updateHot($id=null)
     {
@@ -299,9 +280,11 @@ class ProductController extends Controller
     public function products($id=null)
     {
         $productDetails = Product::where('isDelete', 0)->with('attributes')->where('id',$id)->first();
-        $featuredProducts = Product::where('isDelete', 0)->where(['status' => 1, 'feature' => 1])->get();
+        $product = Product::where(['isDelete' => 0, 'id' => $id])->first();
+        $category_id = $product->category_id;
+        $relatedProducts = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $category_id])->limit(4)->get();
 
-        return view('fashi.product_details', compact('productDetails','featuredProducts'));
+        return view('fashi.product_details', compact('productDetails','relatedProducts'));
     }
 
     // Client search

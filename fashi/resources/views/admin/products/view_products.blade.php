@@ -80,7 +80,6 @@
                                <th>Giá</th>
                                <th>Giá giảm</th>
                                <th>Trạng thái</th>
-                               <th>Featured</th>
                                <th>Hot</th>
                                <th>New</th>
                                <th>Hành động</th>
@@ -105,19 +104,6 @@
                                             >
 
                                             @if ($product->status == "1")
-                                                Hiện
-                                            @else
-                                                Ẩn
-                                            @endif
-                                        </button>
-                                    </td>
-
-
-                                    <td>
-                                        <button onclick="updateFeature({{$product->id}})" type="button" class="buttonupdate" id="{{$product->id}}-feature"
-                                            >
-
-                                            @if ($product->feature == "1")
                                                 Hiện
                                             @else
                                                 Ẩn
@@ -178,13 +164,6 @@
                 // đường dẫn này để đến AjaxController
                 $.get("admin/update-product-status/" + idPro,function (data) {
                     $("#"+idPro+"-status").text(data);
-                });
-            }
-            function updateFeature(idPro)
-            {
-                // đường dẫn này để đến AjaxController
-                $.get("admin/update-feature-product-status/" + idPro,function (data) {
-                    $("#"+idPro+"-feature").text(data);
                 });
             }
             function updateHot(idPro)
