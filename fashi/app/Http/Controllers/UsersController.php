@@ -179,10 +179,12 @@ class UsersController extends Controller
         }
         return view('fashi.users.change_password');
     }
+
     public function changeAddress(Request $request)
     {
         $user_id = Auth::user()->id;    // lay id cua user dang login
         $userDetails = User::find($user_id);    //lay thogn tin cua user dang login
+
         if($request->isMethod('post'))
         {
             $data = $request->all();
@@ -196,6 +198,6 @@ class UsersController extends Controller
             $users->save();
             return redirect()->back()->with('flash_message_success','Account Details has been updated');
         }
-        return view('fashi.users.change_address', compact('countries', 'userDetails'));
+        return view('fashi.users.change_address', compact('userDetails'));
     }
 }

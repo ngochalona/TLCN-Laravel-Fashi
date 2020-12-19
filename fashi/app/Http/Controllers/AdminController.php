@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Admin;
 use App\User;
+use App\Bill;
 use App\Order;
 use Session;
 class AdminController extends Controller
@@ -31,10 +32,11 @@ class AdminController extends Controller
         return view('admin.admin_login');
     }
 
+
     public function dashboard(){
 
         $countUser = User::where('admin', 0)->count();
-        $aveunes = Order::where('order_status','Paid')->get();
+        $aveunes = Bill::get();
         $totalAveune = 0;
         foreach ($aveunes as $key => $value) {
             $totalAveune += $value->grand_total;
@@ -42,22 +44,25 @@ class AdminController extends Controller
 
 
         $users = User::select(\DB::raw("COUNT(*) as count"))
-                    ->whereYear('created_at', date('Y'))
-                    ->groupBy(\DB::raw("Month(created_at)"))
-                    ->pluck('count');
+            ->whereYear('created_at', date('Y'))
+            ->groupBy(\DB::raw("Month(created_at)"))
+            ->pluck('count');
 
 
-        $avenue = Order::select(\DB::raw("SUM(grand_total) as sum"))->where('order_status','Paid')
-        ->whereYear('created_at', date('Y'))
-        ->groupBy(\DB::raw("Month(created_at)"))
-        ->pluck('sum');
+        $avenue = Bill::select(\DB::raw("SUM(grand_total) as sum"))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy(\DB::raw("Month(created_at)"))
+            ->pluck('sum');
 
-        $monthOfAvenue = Order::select(\DB::raw("Month(created_at) as month"))->where('order_status','Paid')
-        ->whereYear('created_at', date('Y'))->distinct('month')->pluck('month');
+        $monthOfAvenue = Bill::select(\DB::raw("Month(created_at) as month"))
+            ->whereYear('created_at', date('Y'))->distinct('month')->pluck('month');
 
 
         return view('admin.dashboard', compact('countUser','totalAveune', 'users','avenue', 'monthOfAvenue'));
     }
+
+
+
 
     // Admin logout
     public function logout()

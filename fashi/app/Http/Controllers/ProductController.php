@@ -301,7 +301,6 @@ class ProductController extends Controller
         $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
         // lay ra tat ca san pham cua 1 loai category
 
-
         $tukhoa = $request->tukhoa;
         $products = Product::where('isDelete', 0)->where('name','like',"%$tukhoa%")->paginate(4);
         return view('fashi.products.timkiem', compact('tukhoa', 'products', 'categories'));
