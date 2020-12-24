@@ -62,7 +62,6 @@ class OrdersController extends Controller
 
                 // Add vào billDetails
                 $orderDetails = Order::with('orders')->where('id', $data['order_id'])->first();
-//            $orderDetails = Order::with('orders')->where('id', $data['order_id'])->get();
                 foreach ($orderDetails->orders as $item)
                 {
                     $cartPro = new BillsDetails;// bảng orderDetails
@@ -82,6 +81,19 @@ class OrdersController extends Controller
                     ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->update(['stock' => $stock - $item->product_qty]);
                 }
             }
+
+//            if($data['order_status'] == "Trả hàng")
+//            {
+//                $orderDetails = Order::with('orders')->where('id', $data['order_id'])->first();
+//
+//                foreach ($orderDetails->orders as $item)
+//                {
+//                    // Cộng sp trong stock
+//                    $getStock = ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->first();
+//                    $stock = $getStock->stock;
+//                    ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->update(['stock' => $stock + $item->product_qty]);
+//                }
+//            }
         }
 
 

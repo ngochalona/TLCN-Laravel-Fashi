@@ -62,6 +62,7 @@ Route::group(['middleware' => ['frontLogin']], function () {
     Route::match(['get', 'post'], '/checkout', 'CartController@checkout');
     // Route::match(['get', 'post'], '/order-review', 'CartController@orderReview');
     // Route::match(['get', 'post'], '/place-order', 'CartController@placeOrder');
+    Route::get('/update-order-status-huydon/{id}', 'CartController@cancelOrder' );
     Route::get('/thanks', 'CartController@thanks');
     Route::match(['get', 'post'], '/stripe', 'CartController@stripe');
     Route::get('/orders', 'CartController@userOrders');
@@ -129,6 +130,7 @@ Route::group(['middleware' => ['AdminLogin']], function () {
     //Orders route
     Route::get('admin/orders', 'OrdersController@viewOrders' );
     Route::get('admin/orders/{id}', 'OrdersController@viewOrdersDetails');
+
     //update order status
     Route::post('admin/update-order-status', 'OrdersController@updateOrderStatus');
     // Customer route

@@ -73,7 +73,7 @@ class CartController extends Controller
         $sku = $productAtt->sku;
 
         $countProducts = DB::table('cart')->where(['product_id'=>$data['product_id'],'product_code'=>$data['product_code'], 'size'=>$sizeArr[1],
-         'price'=>$data['price'], 'session_id'=>$session_id])->count();
+            'price'=>$data['price'], 'session_id'=>$session_id])->count();
 
         if($countProducts > 0)
         {
@@ -83,9 +83,9 @@ class CartController extends Controller
         {
             // insert vào cart, không sử dụng model
             DB::table('cart')->insert(['product_id'=>$data['product_id'], 'product_name'=>$data['product_name'],
-            'product_code'=>$data['product_code'], 'product_sku'=>$sku,
-            'price'=>$data['price'], 'size'=>$sizeArr[1], 'quantity'=>$data['quantity'],
-            'user_email'=>$data['user_email'], 'session_id'=>$session_id]);
+                'product_code'=>$data['product_code'], 'product_sku'=>$sku,
+                'price'=>$data['price'], 'size'=>$sizeArr[1], 'quantity'=>$data['quantity'],
+                'user_email'=>$data['user_email'], 'session_id'=>$session_id]);
         }
 
         return redirect('/cart')->with('flash_message_success','Product has been added in cart');
@@ -110,7 +110,7 @@ class CartController extends Controller
         foreach($userCart as $key=>$products)
         {
             $productDetails = Product::where(['id' => $products->product_id])->first();
-        // gán ảnh của sp đó trong bảng Product cho ảnh của sp trong giỏ hàng
+            // gán ảnh của sp đó trong bảng Product cho ảnh của sp trong giỏ hàng
             // chuỗi json $userCart thêm vào field image, dưới cart không có image
             $userCart[$key]->image = $productDetails->image ;
         }
@@ -245,8 +245,8 @@ class CartController extends Controller
 
             // cap nhat dia chi cua user
             User::where('id', $user_id)->update(['name'=>$data['billing_name'],'address'=>$data['billing_address']
-            ,'city'=>$data['billing_city'],'state'=>$data['billing_state']
-            ,'ward'=>$data['billing_ward'],'mobile'=>$data['billing_mobile']]);
+                ,'city'=>$data['billing_city'],'state'=>$data['billing_state']
+                ,'ward'=>$data['billing_ward'],'mobile'=>$data['billing_mobile']]);
 
             if(empty(Session::get('CouponCode')))
             {
@@ -501,5 +501,12 @@ class CartController extends Controller
         $item = DB::table('cart')->where('id',$id)->first();
         $proAtrr = ProductsAttributes::where(['product_id' => $item->product_id,'size' => $item->size])->first();
         echo $proAtrr->stock;
+    }
+
+    // khách hàng hủy đơn
+    public function cancelOrder($id = null)
+    {
+        Order::where('id', $id)->update(['order_status' => 'Hủy đơn']);
+        echo "success";
     }
 }

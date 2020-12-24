@@ -152,6 +152,7 @@
                                         <option value="Đang giao" @if ($orderDetails->order_status == "Đang giao") selected @endif>Đang giao</option>
                                         <option value="Hủy đơn" @if ($orderDetails->order_status == "Hủy đơn") selected @endif>Hủy đơn</option>
                                         <option value="Đã thanh toán" @if ($orderDetails->order_status == "Đã thanh toán") selected @endif>Đã thanh toán</option>
+{{--                                        <option value="Trả hàng" @if ($orderDetails->order_status == "Trả hàng") selected @endif>Trả hàng</option>--}}
 
                                     </select>
                                 </td>
