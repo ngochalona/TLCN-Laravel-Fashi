@@ -192,8 +192,20 @@
             }
 
 
+        if(window.location.pathname === '/cart')
+        {
+            $(".home").css("background-color", "#222222");
+            $(".about").css("background-color", "#222222");
+            $(".cart_a").css("color", "#FFFFFF");
+            $(".category").css("background-color", "#222222");
+            $(".contact").css("background-color", "#222222");
+            $(".blog").css("background-color", "#222222");
+            $(".cart").css("background-color", "#E7AB3C");
+        }
+
     </script>
 
 
 
 @endsection
+

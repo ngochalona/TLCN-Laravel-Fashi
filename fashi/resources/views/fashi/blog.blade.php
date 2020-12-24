@@ -38,3 +38,17 @@
 </div>
 
 @endsection
+
+@section('script')
+    <script>
+        if(window.location.pathname === '/blog')
+        {
+            $(".home").css("background-color", "#222222");
+            $(".about").css("background-color", "#222222");
+            $(".blog_a").css("color", "#FFFFFF");
+            $(".category").css("background-color", "#222222");
+            $(".contact").css("background-color", "#222222");
+            $(".blog").css("background-color", "#E7AB3C");
+        }
+    </script>
+@endsection

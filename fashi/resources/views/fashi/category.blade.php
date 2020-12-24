@@ -121,6 +121,21 @@
 
     </div>
 
+@endsection
 
-</div>
+@section('script')
+    <script>
+        var str = window.location.pathname;
+        var n = str.includes("categories");
+        if(n)
+        {
+            $(".home").css("background-color", "#222222");
+            $(".about").css("background-color", "#222222");
+            $(".category_a").css("color", "#FFFFFF");
+            $(".category").css("background-color", "#E7AB3C");
+            $(".contact").css("background-color", "#222222");
+            $(".blog").css("background-color", "#222222");
+            $(".cart").css("background-color", "#222222");
+        }
+    </script>
 @endsection

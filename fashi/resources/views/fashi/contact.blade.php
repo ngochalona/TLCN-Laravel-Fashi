@@ -54,3 +54,18 @@
 </div>
 
 @endsection
+
+@section('script')
+    <script>
+        if(window.location.pathname === '/contact')
+        {
+            $(".home").css("background-color", "#222222");
+            $(".about").css("background-color", "#222222");
+            $(".contact_a").css("color", "#FFFFFF");
+            $(".category").css("background-color", "#222222");
+            $(".contact").css("background-color", "#E7AB3C");
+            $(".blog").css("background-color", "#222222");
+            $(".cart").css("background-color", "#222222");
+        }
+    </script>
+@endsection

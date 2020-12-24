@@ -27,6 +27,7 @@
 li.active{
     background-color: #E7AB3C !important;
 }
+
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus{
 
     background-color: #E7AB3C !important;
@@ -1342,5 +1343,6 @@ li.active{
   .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
   }
+
 
 

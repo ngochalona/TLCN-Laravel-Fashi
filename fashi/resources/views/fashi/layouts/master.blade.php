@@ -73,7 +73,6 @@
                     }
                 });
             });
-
         });
         function selectPaymentMethod(){
             if($('.stripe').is(':checked') || $('.cod').is(':checked'))
@@ -81,12 +80,6 @@
                 //alert("check");
             }
         }
-
-
-
-
-
-
 
 
     </script>
