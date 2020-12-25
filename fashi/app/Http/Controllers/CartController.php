@@ -74,13 +74,14 @@ class CartController extends Controller
 
         $countProducts = DB::table('cart')->where(['product_id'=>$data['product_id'],'product_code'=>$data['product_code'], 'size'=>$sizeArr[1],
             'price'=>$data['price'], 'session_id'=>$session_id])->count();
-
+ 
         if($countProducts > 0)
         {
             return redirect()->back()->with('flash_message_error','Product already exists in cart');
         }
         else
         {
+
             // insert vào cart, không sử dụng model
             DB::table('cart')->insert(['product_id'=>$data['product_id'], 'product_name'=>$data['product_name'],
                 'product_code'=>$data['product_code'], 'product_sku'=>$sku,

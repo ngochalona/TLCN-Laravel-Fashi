@@ -70,7 +70,7 @@
 
  <span   onclick="updateQuantityDec({{$cart->id}})"  style="font-size: 25px; color: black; cursor: pointer;">-</span>
 
- <input id="{{$cart->id}}" style="width:100px ;border: 2px solid #b2b2b2;text-align: center;padding:2px;font-size: 16px" type="text" size="4" value="{{$cart->quantity}}" min="0" step="1" class="c-input-text qty text">
+ <input id="{{$cart->id}}" style="width:100px ;border: 2px solid #b2b2b2;text-align: center;padding:2px;font-size: 16px" type="text" size="4" value="{{$cart->quantity}}" min="0" step="1" class="c-input-text qty text" readonly>
 
  <span onclick="updateQuantityInc({{$cart->id}})"  style="font-size: 25px; color: black; cursor: pointer;">+</span>
 

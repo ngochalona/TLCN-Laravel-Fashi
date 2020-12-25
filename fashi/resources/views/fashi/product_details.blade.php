@@ -75,7 +75,7 @@
 
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" id="quantity" value="1" name="quantity">
+                                <input type="text" id="quantity" value="1" name="quantity" readonly>
                             </div>
                             <button id="addToCart" type="submit" style="color: #000000"  class="myButton">THÊM VÀO GIỎ HÀNG</button>
                         </div>
