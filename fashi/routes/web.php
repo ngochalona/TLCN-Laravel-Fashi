@@ -20,6 +20,8 @@ Route::get('/get-product-stock', 'ProductController@getStock');
 // route for login register
 Route::match(['get', 'post'], '/userLogin', 'UsersController@userLogin');
 Route::match(['get', 'post'], '/userRegister', 'UsersController@userRegister');
+Route::get('/redirect', 'UsersController@redirectToProvider')->name('redirectGoogle');
+Route::get('/auth/google/callback', 'UsersController@handleProviderCallback');
 // route for logout
 Route::match(['get', 'post'], '/userLogout', 'UsersController@logout');
 //route for add user

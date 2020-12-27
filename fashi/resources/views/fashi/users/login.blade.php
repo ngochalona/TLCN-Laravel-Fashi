@@ -77,6 +77,9 @@
                                     <button type="submit" class="site-btn login-btn dangnhap">Sign In</button>
                                 </form>
                                 <div class="switch-login">
+                                    <a href="{{ route('redirectGoogle') }}" class="or-login">Login with google</a>
+                                </div>
+                                <div class="switch-login">
                                     <a href="{{ url('/userRegister')}}" class="or-login">Or Create An Account</a>
                                 </div>
                             </div>
