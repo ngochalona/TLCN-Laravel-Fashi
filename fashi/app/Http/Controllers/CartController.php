@@ -74,7 +74,7 @@ class CartController extends Controller
 
         $countProducts = DB::table('cart')->where(['product_id'=>$data['product_id'],'product_code'=>$data['product_code'], 'size'=>$sizeArr[1],
             'price'=>$data['price'], 'session_id'=>$session_id])->count();
- 
+
         if($countProducts > 0)
         {
             return redirect()->back()->with('flash_message_error','Product already exists in cart');

@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use Socialite;
 use App\User;
 use Auth;
 use Session;
 use View;
-use Laravel\Socialite\Facades\Socialite;
 use DB;
 use App\Category;
-
 
 class UsersController extends Controller
 {
@@ -242,13 +241,48 @@ class UsersController extends Controller
             $newUser->name            = $user->name;
             $newUser->email           = $user->email;
             $newUser->google_id       = $user->id;
-            $newUser->avatar          = $user->avatar;
-            $newUser->avatar_original = $user->avatar_original;
             $newUser->save();
 
             auth()->login($newUser, true);
         }
+
+        Session::put('frontSession',$user->email);
         return redirect()->to('/');
     }
+    public function redirect($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+    public function callback($provider)
+    {
+        $getInfo = Socialite::driver($provider)->stateless()->user();
+        $user = $this->createUser($getInfo,$provider);
+        if($user != null) {
+            auth()->login($user);
+            Session::put('frontSession',$user->email);
+            return redirect()->to('/');
+        }
+        return redirect()->to('/userLogin');
+    }
+    function createUser($getInfo,$provider){
 
+        try {
+            $user = User::where('provider_id', $getInfo->id)->first();
+            $existingUser = User::where('email', $getInfo->email)->first();
+            if ($user == null && !$existingUser) {
+                return User::create([
+                    'name'     => $getInfo->name,
+                    'email'    => $getInfo->email,
+                    'provider' => $provider,
+                    'provider_id' => $getInfo->id
+                ]);
+            }
+            return $user ?? $existingUser;
+        }catch (Exception $e) {
+            return null;
+        }
+
+
+        return $user;
+    }
 }

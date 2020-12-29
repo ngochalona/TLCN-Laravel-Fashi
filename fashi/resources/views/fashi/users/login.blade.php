@@ -80,6 +80,9 @@
                                     <a href="{{ route('redirectGoogle') }}" class="or-login">Login with google</a>
                                 </div>
                                 <div class="switch-login">
+                                    <a href="{{ route('redirectFacebook',['facebook']) }}" class="or-login">Login with facebook</a>
+                                </div>
+                                <div class="switch-login">
                                     <a href="{{ url('/userRegister')}}" class="or-login">Or Create An Account</a>
                                 </div>
                             </div>

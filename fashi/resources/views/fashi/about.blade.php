@@ -27,13 +27,15 @@
         <img src="uploads/products/about-us.jpg" alt="">
 
         <div style="text-align: justify; font-size: 18px; margin-top: 20px; color: #696969; font-family:Georgia;">
-            <p><span style="font-size: 20px;color: #000000">Welcome to Fashi Shop,</span> your number one source for all things clothes, such as: t-shirt, shirt, dress, pant, etc. We're dedicated to giving you the very best of clothes, with a focus on three people, such as: Men, Women and children.
-                Founded in 2020 by Ngoc Le, Fashi shop has come a long way from its beginnings in a VietNam, such as: Shop street, center mall. When Ngoc Le first started out, her passion for helping others be more confident in their perfect appearance drove her to work hard, and gave her the impetus to turn hard work and inspiration into to a booming online store.
-                We now serve customers all over the world, and are thrilled to be a part of the eco-friendly wing of the fashion industry.</p>
+            <p><span style="font-size: 20px;color: #000000">Chào mừng đến với Fashi Shop,</span>Thời trang Fashi là thương hiệu thời trang hàng đầu Việt Nam. Thành lập năm 2002, NEM đã từng bước tạo dựng được niềm tin và có được vị thế trong lòng khách hàng.</p>
 
-            <p>We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don't hesitate to contact us.</p>
+            <p>Mỗi tháng, Fashi cho ra mắt trên 500 mẫu thời trang. Dòng thời trang của NEM hiện nay rất đa dạng, từ sản phẩm cao cấp cho nam và nữ cho tới sản phẩm trung cấp phổ thông. Những mẫu trang phục dựa trên thông tin đánh giá thị trường, nghiên cứu xu hướng thời trang thế giới và sở thích của khách hàng Việt Nam. Đồng thời, những trang phục của Fashi cũng luôn được đánh giá cao trong việc dự báo trước các xu hướng thời trang về gam màu, kiểu dáng, cách xử lý chất liệu… trở thành tâm điểm của làng thời trang Việt trong mỗi lần tạo dựng Bộ sưu tập mới.
 
-            <p>Sincerely,</p>
+                Hệ thống cửa hàng với chuẩn thống nhất bao phủ khắp các đô thị lớn trên cả nước và tọa lạc tại những khu phố “vàng”.
+
+                Thời trang Fashi luôn cố gắng giữ vững vị trí tiên phong trong việc dẫn dắt xu hướng thời trang Việt Nam.</p>
+
+            <p>Cám ơn quý khách hàng đã luôn ủng hộ chúng tôi!</p>
             <p>Ngoc Le, Founder.</p>
         </div>
 

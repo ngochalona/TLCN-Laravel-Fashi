@@ -22,6 +22,8 @@ Route::match(['get', 'post'], '/userLogin', 'UsersController@userLogin');
 Route::match(['get', 'post'], '/userRegister', 'UsersController@userRegister');
 Route::get('/redirect', 'UsersController@redirectToProvider')->name('redirectGoogle');
 Route::get('/auth/google/callback', 'UsersController@handleProviderCallback');
+Route::get('/auth/redirect/{provider}', 'UsersController@redirect')->name('redirectFacebook');
+Route::get('/auth/callback/{provider}', 'UsersController@callback');
 // route for logout
 Route::match(['get', 'post'], '/userLogout', 'UsersController@logout');
 //route for add user
