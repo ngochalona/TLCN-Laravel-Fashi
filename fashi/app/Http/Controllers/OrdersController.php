@@ -35,11 +35,32 @@ class OrdersController extends Controller
         $data = $request->all();
         $or = Order::where('id', $data['order_id'])->first();
         $currentStatus = $or->order_status;
-        if($currentStatus != "Đã thanh toán")
+        if($currentStatus != "Đã thanh toán" && $currentStatus != "Trả hàng")
         {
+            $orderDetails = Order::with('orders')->where('id', $data['order_id'])->first();
             // Update status
             Order::where('id', $data['order_id'])->update(['order_status' => $data['order_status']]);
-            if($data['order_status'] == "Đã thanh toán")
+
+            if($data['order_status'] == "Trả hàng" && $currentStatus == "Đang xử lý" ||
+                $data['order_status'] == "Đã thanh toán" && $currentStatus == "Đang xử lý" ||
+                $data['order_status'] == "Đang xử lý" && $currentStatus == "Đang giao"
+            )
+            {
+                Order::where('id', $data['order_id'])->update(['order_status' => $currentStatus]);
+            }
+
+            if($data['order_status'] == "Đang giao" && $currentStatus != "Đang giao")
+            {
+                foreach ($orderDetails->orders as $item)
+                {
+                    // Trừ sp trong stock
+                    $getStock = ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->first();
+                    $stock = $getStock->stock;
+                    ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->update(['stock' => $stock - $item->product_qty]);
+                }
+
+            }
+            if($data['order_status'] == "Đã thanh toán" && $currentStatus == "Đang giao")
             {
                 // Add vào bill
                 $order = Order::where(['id' => $data['order_id']])->first();
@@ -75,27 +96,20 @@ class OrdersController extends Controller
                     $cartPro->product_qty = $item->product_qty;
                     $cartPro->save();
 
-                    // Trừ sp trong stock
-                    $getStock = ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->first();
-                    $stock = $getStock->stock;
-                    ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->update(['stock' => $stock - $item->product_qty]);
                 }
             }
 
-//            if($data['order_status'] == "Trả hàng")
-//            {
-//                $orderDetails = Order::with('orders')->where('id', $data['order_id'])->first();
-//
-//                foreach ($orderDetails->orders as $item)
-//                {
-//                    // Cộng sp trong stock
-//                    $getStock = ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->first();
-//                    $stock = $getStock->stock;
-//                    ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->update(['stock' => $stock + $item->product_qty]);
-//                }
-//            }
+            if($data['order_status'] == "Trả hàng" && $currentStatus != "Đang xử lý")
+            {
+                foreach ($orderDetails->orders as $item)
+                {
+                    // Cộng sp trong stock
+                    $getStock = ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->first();
+                    $stock = $getStock->stock;
+                    ProductsAttributes::where(['size' => $item->product_size, 'product_id' => $item->product_id])->update(['stock' => $stock + $item->product_qty]);
+                }
+            }
         }
-
 
         return redirect()->back()->with('flash_message_success','Order Status has been updated');
     }
