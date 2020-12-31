@@ -31,9 +31,6 @@
         </div>
     @endif
 
-    <div id="message_success" style="display:none;" class="alert alert-sm alert-success">Status Enabled</div>
-    <div id="message_error" style="display:none;" class="alert alert-sm alert-danger">Status Disabled</div>
-
     <!-- Main content -->
     <section class="content">
        <div class="row">
@@ -57,7 +54,7 @@
                    </div>
                    <div class="btn-group">
                     <div class="buttonexport" id="buttonlist">
-                       <a class="btn btn-add" href="{{ url('/admin/restore-product') }}"> <i class="fa fa-plus"></i> Khôi phục
+                       <a class="btn btn-add" href="{{ url('/admin/restore-product') }}"> <i class="fa fa-arrow-circle-up"></i> Khôi phục
                        </a>
                     </div>
                    </div>

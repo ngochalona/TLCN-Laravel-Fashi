@@ -72,31 +72,7 @@
 
 
             <div class="row">
-
-                <!-- bar chart -->
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="panel panel-bd lobidisable">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                <h4>Doanh thu năm 2020</h4>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <figure class="highcharts-figure">
-                                <div id="container2"></div>
-                                <p class="highcharts-description">
-                                    Biểu đồ hiển thị doanh thu trong năm 2020
-                                </p>
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-
-
-            <div class="row">
-                <div class="col-xs-12 col-sm-12">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="panel panel-bd lobidrag">
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -110,8 +86,25 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- bar chart -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="panel panel-bd lobidisable">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h4>Doanh thu năm 2020</h4>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="chartContainer" style="height: 300px; width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- /.row -->
+
+
+
 
 
         </section>
@@ -120,51 +113,29 @@
 @endsection
 
 @section('script')
-    <script>
-        var month = <?php echo json_encode($monthOfAvenue) ?>;
-        var avenue = <?php echo json_encode($avenue) ?>;
 
-        Highcharts.chart('container2', {
-            chart: {
-                type: 'column'
+<script type="text/javascript">
+   var doanhthu = <?php echo json_encode($dataPoints);?>;
+
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+
+            title:{
+                text: "Doanh thu trong năm 2020"
             },
-            title: {
-                text: 'Doanh thu năm 2020'
+            axisY: {
+                interval: 500
             },
-            xAxis: {
-                categories: month,
-                title: {
-                    text: 'Tháng '
+            data: [
+                {
+                    type: "column",
+                    dataPoints: doanhthu
                 }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Doanh thu (VND) '
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            tooltip: {
-                pointFormat: 'Doanh thu năm 2020 <b>{point.y:.1f} VND</b>'
-            },
-            series: [{
-                name: 'Doanh thu',
-                data: avenue,
-                dataLabels: {
-                    enabled: true,
-                    rotation: -90,
-                    color: '#FFFFFF',
-                    align: 'right',
-                    format: '{point.y:.1f}', // one decimal
-                    y: 10, // 10 pixels down from the top
-                    style: {
-                        fontSize: '13px',
-                        fontFamily: 'Verdana, sans-serif'
-                    }
-                }
-            }]
+            ]
         });
-    </script>
+
+        chart.render();
+    }
+</script>
+
 @endsection

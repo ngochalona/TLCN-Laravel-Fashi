@@ -2,7 +2,7 @@
 
     <!---------------------------- start menu----------------------- -->
     <div class="container">
-        <nav class="navbar navbar-default menu">
+        <nav class="navbar navbar-default menu ">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -17,7 +17,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right ">
                         <li>
                             <form class="navbar-form" action="{{ url('/timkiem')}}" method="post"> {{csrf_field()}}
                                 <div class="form-group">
@@ -42,7 +42,7 @@
         </nav>
     </div>
 
-    <nav class="navbar navbar-inverse menu1">
+    <nav class="navbar navbar-inverse menu1 fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">

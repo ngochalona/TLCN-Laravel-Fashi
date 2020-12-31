@@ -451,7 +451,8 @@ class CartController extends Controller
     public function userOrders()
     {
         $user_id = Auth::user()->id;
-        $orders = Order::with('orders')->where('user_id', $user_id)->orderBy('id','DESC')->get();
+        $user_email = Auth::user()->email;
+        $orders = Order::with('orders')->where('user_id', $user_id)->orWhere('user_email', $user_email)->orderBy('id','DESC')->get();
 
         return view('fashi.orders.user_orders',compact('orders'));
     }

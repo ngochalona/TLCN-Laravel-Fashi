@@ -49,19 +49,33 @@ class AdminController extends Controller
             ->pluck('count');
 
 
-        $avenue = Bill::select(\DB::raw("SUM(grand_total) as sum"))
-            ->whereYear('created_at', date('Y'))
-            ->groupBy(\DB::raw("Month(created_at)"))
-            ->pluck('sum');
+        $test = Bill:: select(\DB::raw("SUM(grand_total) as sum, month(created_at) as month"))->whereYear('created_at', date('Y'))->groupBy(\DB::raw("Month(created_at)"))->pluck('sum','month');
+        $avenue = array(0,0,0,0,0,0,0,0,0,0,0,0);
 
-        $monthOfAvenue = Bill::select(\DB::raw("Month(created_at) as month"))
-            ->whereYear('created_at', date('Y'))->distinct('month')->pluck('month');
+        foreach ($test as $key => $value)
+        {
+            $avenue[$key - 1] = $value;
+        }
 
+//
 
-        return view('admin.dashboard', compact('countUser','totalAveune', 'users','avenue', 'monthOfAvenue'));
+        $dataPoints = array(
+            array("x"=> 1, "y"=> $avenue[0]),
+            array("x"=> 2, "y"=> $avenue[1]),
+            array("x"=> 3, "y"=> $avenue[2]),
+            array("x"=> 4, "y"=> $avenue[3]),
+            array("x"=> 5, "y"=> $avenue[4]),
+            array("x"=> 6, "y"=> $avenue[5]),
+            array("x"=> 7, "y"=> $avenue[6]),
+            array("x"=> 8, "y"=> $avenue[7]),
+            array("x"=> 9, "y"=> $avenue[8]),
+            array("x"=> 10, "y"=> $avenue[9]),
+            array("x"=> 11, "y"=> $avenue[10]),
+            array("x"=> 12, "y"=> $avenue[11])
+        );
+
+        return view('admin.dashboard', compact('countUser','totalAveune','avenue', 'dataPoints'));
     }
-
-
 
 
     // Admin logout

@@ -68,7 +68,7 @@
         @yield('content')
             <!-- /.content-wrapper -->
         @include('admin.layouts.footer')
-      </div>
+
       <!-- /.wrapper -->
       <!-- Start Core Plugins
          =====================================================================-->
@@ -119,15 +119,11 @@
          =====================================================================-->
       <!-- Dashboard js -->
       <script src="admin_assets/dist/js/dashboard.js" type="text/javascript"></script>
-
-      <script src="https://code.highcharts.com/highcharts.js"></script>
-      <script src="https://code.highcharts.com/modules/exporting.js"></script>
-      <script src="https://code.highcharts.com/modules/export-data.js"></script>
-      <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+      <script src="admin_assets/js/canvasjs.min.js" type="text/javascript"></script>
 
       <!-- End Theme label Script
          =====================================================================-->
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8" src="admin_assets/js/jquery.dataTables.js"></script>
       <script>
         $(document).ready( function () {
             $('#table_id').DataTable({
@@ -162,88 +158,9 @@
 
         } );
       </script>
-      <script>
-         function dash() {
-         // single bar chart
-         var ctx = document.getElementById("singelBarChart");
-         var myChart = new Chart(ctx, {
-         type: 'bar',
-         data: {
-         labels: ["Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat"],
-         datasets: [
-         {
-         label: "My First dataset",
-         data: [40, 55, 75, 81, 56, 55, 40],
-         borderColor: "rgba(0, 150, 136, 0.8)",
-         width: "1",
-         borderWidth: "0",
-         backgroundColor: "rgba(0, 150, 136, 0.8)"
-         }
-         ]
-         },
-         options: {
-         scales: {
-         yAxes: [{
-             ticks: {
-                 beginAtZero: true
-             }
-         }]
-         }
-         }
-         });
-               //monthly calender
-               $('#m_calendar').monthly({
-                 mode: 'event',
-                 //jsonUrl: 'events.json',
-                 //dataType: 'json'
-                 xmlUrl: 'events.xml'
-             });
 
-         //bar chart
-         var ctx = document.getElementById("barChart");
-         var myChart = new Chart(ctx, {
-         type: 'bar',
-         data: {
-         labels: ["January", "February", "March", "April", "May", "June", "July", "august", "september","october", "Nobemver", "December"],
-         datasets: [
-         {
-         label: "My First dataset",
-         data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
-         borderColor: "rgba(0, 150, 136, 0.8)",
-         width: "1",
-         borderWidth: "0",
-         backgroundColor: "rgba(0, 150, 136, 0.8)"
-         },
-         {
-         label: "My Second dataset",
-         data: [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86],
-         borderColor: "rgba(51, 51, 51, 0.55)",
-         width: "1",
-         borderWidth: "0",
-         backgroundColor: "rgba(51, 51, 51, 0.55)"
-         }
-         ]
-         },
-         options: {
-         scales: {
-         yAxes: [{
-             ticks: {
-                 beginAtZero: true
-             }
-         }]
-         }
-         }
-         });
-             //counter
-             $('.count-number').counterUp({
-                 delay: 10,
-                 time: 5000
-             });
-         }
-         dash();
-      </script>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.js"></script>
+      <link rel="stylesheet" href="admin_assets/css/bootstrap-toggle.css">
+      <script src="admin_assets/js/bootstrap-toggle.js"></script>
       @include('sweetalert::alert')
 
 

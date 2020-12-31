@@ -6,20 +6,12 @@
     <base href="{{ asset('')}}">
     <link rel="stylesheet" type="text/css" href="front_assets/css/style.css" >
     <link rel="stylesheet" type="text/css" href="front_assets/css/bootstrap.min.css" >
-    <link href="http://getbootstrap.com/examples/navbar-fixed-top/navbar-fixed-top.css" rel="stylesheet">
-
-    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet" type="text/css">
+    <link href="front_assets/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link href="front_assets/css/normalize.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="front_assets/slider/style.css">
-
-
-
-
-    <script src="https://kit.fontawesome.com/81dd6e8cf7.js" crossorigin="anonymous"></script>
+    <script src="front_assets/js/fontawesomekit.js" crossorigin="anonymous"></script>
 
     <title>Fashi Shop</title>
-
-
 </head>
 <body>
     @include('fashi.layouts.header')
