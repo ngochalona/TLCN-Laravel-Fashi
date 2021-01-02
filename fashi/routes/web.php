@@ -29,7 +29,7 @@ Route::match(['get', 'post'], '/userLogout', 'UsersController@logout');
 //route for add user
 
 // Route for confirm email
-Route::get('/confirm/{code}', 'UsersController@confirmAccount');
+//Route::get('/confirm/{code}', 'UsersController@confirmAccount');
 
 //route for add to cart
 Route::match(['get', 'post'], 'add-cart', 'CartController@addtoCart');

@@ -91,15 +91,14 @@ class UsersController extends Controller
             $user->password = bcrypt($request->password);
             $user->save();
 
-
-            // confirm email
-            $email = $data['email'];
-            $message = ['email' => $data['email'], 'name' => $data['name'], 'code' => base64_encode($data['email'])];
-            Mail::send('fashi.email.confirm', $message, function ($message) use($email) {
-                $message->to($email, 'John Doe');
-                $message->subject('Đăng ký tài khoản Fashi');
-            });
-            return redirect()->back()->with('flash_message_error', 'Kích hoạt tài khoản trong email của bạn. ');
+//            // confirm email
+//            $email = $data['email'];
+//            $message = ['email' => $data['email'], 'name' => $data['name'], 'code' => base64_encode($data['email'])];
+//            Mail::send('fashi.email.confirm', $message, function ($message) use($email) {
+//                $message->to($email, 'John Doe');
+//                $message->subject('Đăng ký tài khoản Fashi');
+//            });
+//            return redirect()->back()->with('flash_message_error', 'Kích hoạt tài khoản trong email của bạn. ');
 
             if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
             {
@@ -107,7 +106,7 @@ class UsersController extends Controller
                 if(!empty(Session::get('session_id')))
                 {
                     $session_id = Session::get('session_id');
-                    DB::table('cart')->where('session_id', $session_id)->update(['email' => $data['email']]);
+                    DB::table('cart')->where('session_id', $session_id)->update(['user_email' => $data['email']]);
                 }
                 return redirect('/');
             }

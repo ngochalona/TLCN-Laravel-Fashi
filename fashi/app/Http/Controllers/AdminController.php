@@ -49,15 +49,13 @@ class AdminController extends Controller
             ->pluck('count');
 
 
-        $test = Bill:: select(\DB::raw("SUM(grand_total) as sum, month(created_at) as month"))->whereYear('created_at', date('Y'))->groupBy(\DB::raw("Month(created_at)"))->pluck('sum','month');
+        $test = Bill::select(\DB::raw("SUM(grand_total) as sum, month(created_at) as month"))->whereYear('created_at', date('Y'))->groupBy(\DB::raw("Month(created_at)"))->pluck('sum','month');
         $avenue = array(0,0,0,0,0,0,0,0,0,0,0,0);
 
         foreach ($test as $key => $value)
         {
             $avenue[$key - 1] = $value;
         }
-
-//
 
         $dataPoints = array(
             array("x"=> 1, "y"=> $avenue[0]),
