@@ -58,7 +58,7 @@
                    </div>
                    <div class="btn-group">
                     <div class="buttonexport" id="buttonlist">
-                       <a class="btn btn-add" href="{{ url('/admin/restore-coupon') }}"> <i class="fa fa-plus"></i> Khôi phục
+                       <a class="btn btn-add" href="{{ url('/admin/restore-coupon') }}"> <i class="fa fa-arrow-circle-up"></i> Khôi phục
                        </a>
                     </div>
 
@@ -86,7 +86,7 @@
                                     <td>{{ $coupon->coupon_code }}</td>
                                     <td>
                                         {{ $coupon->amount }}
-                                        @if ($coupon->amount_type == "Percentage") % @else $ @endif
+                                        @if ($coupon->amount_type == "Percentage") % @else VND @endif
                                     </td>
                                     <td>{{ $coupon->amount_type }}</td>
                                     <td>{{ $coupon->expiry_date }}</td>
@@ -96,9 +96,9 @@
                                             >
 
                                             @if ($coupon->status == "1")
-                                                Hiện
-                                            @else
                                                 Ẩn
+                                            @else
+                                                Hiện
                                             @endif
                                         </button>
                                     </td>

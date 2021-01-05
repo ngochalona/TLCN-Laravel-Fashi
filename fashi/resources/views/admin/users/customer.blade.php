@@ -42,6 +42,14 @@
                       </a>
                    </div>
                 </div>
+                 <div class="panel-body">
+                     <div class="btn-group">
+                         <div class="buttonexport" id="buttonlist">
+                             <a class="btn btn-add" href="{{ url('/admin/restore-cus') }}"> <i class="fa fa-arrow-circle-up"></i> Khôi phục
+                             </a>
+                         </div>
+                     </div>
+                 </div>
                    <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
                    <div class="table-responsive">
                       <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
@@ -50,7 +58,7 @@
                                 <th>ID</th>
                                <th>Name</th>
                                <th>Email</th>
-                               <th>Status</th>
+{{--                               <th>Status</th>--}}
                                <th>Action</th>
 
                             </tr>
@@ -61,17 +69,17 @@
                                     <td>{{ $customer->id }}</td>
                                     <td>{{ $customer->name }}</td>
                                     <td>{{ $customer->email }}</td>
-                                    <td>
-                                        <button onclick="update({{$customer->id}})" type="button" class="buttonupdate" id="{{$customer->id}}"
-                                            >
+{{--                                    <td>--}}
+{{--                                        <button onclick="update({{$customer->id}})" type="button" class="buttonupdate" id="{{$customer->id}}"--}}
+{{--                                            >--}}
 
-                                            @if ($customer->status == "1")
-                                                Active
-                                            @else
-                                                Unactive
-                                            @endif
-                                        </button>
-                                    </td>
+{{--                                            @if ($customer->status == "1")--}}
+{{--                                                Active--}}
+{{--                                            @else--}}
+{{--                                                Unactive--}}
+{{--                                            @endif--}}
+{{--                                        </button>--}}
+{{--                                    </td>--}}
 
                                     <td>
                                         <a href="#" class="btn btn-add btn-sm" data-toggle="modal" data-target="#myModal{{ $customer->id}}" title="view more"><i class="fa fa-eye"></i></a>
@@ -87,10 +95,9 @@
                 </div>
              </div>
           </div>
-       </div>
+
     </section>
     <!-- /.content -->
- </div>
 
  @foreach ($userDetails as $customer)
  <div class="modal fade in" id="myModal{{$customer->id}}" tabindex="-1" role="dialog">
@@ -121,16 +128,16 @@
                         <td class="taskDesc">Số điện thoại</td>
                         <td class="taskStatus">{{$customer->mobile}}</td>
                     </tr>
-                    <tr>
-                        <td class="taskDesc">Trạng thái kích hoạt</td>
-                        <td class="taskStatus">
-                            @if($customer->status == 0)
-                                Chưa kích hoạt tài khoản
-                            @else
-                                Đã kích hoạt tài khoản
-                            @endif
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <td class="taskDesc">Trạng thái kích hoạt</td>--}}
+{{--                        <td class="taskStatus">--}}
+{{--                            @if($customer->status == 0)--}}
+{{--                                Chưa kích hoạt tài khoản--}}
+{{--                            @else--}}
+{{--                                Đã kích hoạt tài khoản--}}
+{{--                            @endif--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                    </tbody>
                 </table>
              </div>
@@ -142,22 +149,8 @@
        </div>
     </div>
  </div>
-@endforeach
+</div>
+
+ @endforeach
 @endsection
 
-@section('script')
-    <script>
-
-        function update(idCustomer)
-        {
-            $.get("admin/update-customer-status/" + idCustomer,function (data) {
-                $("#"+idCustomer).text(data);
-            });
-        }
-
-
-    </script>
-
-
-
-@endsection

@@ -233,12 +233,12 @@ class CartController extends Controller
                 'billing_mobile'=>'required',
 
             ],[
-                'billing_name.required'=>'You have not entered billing name',
-                'billing_address.required'=>'You have not entered billing address',
-                'billing_city.required'=>'You have not entered billing city',
-                'billing_state.required'=>'You have not entered billing state',
-                'billing_ward.required'=>'You have not entered billing ward',
-                'billing_mobile.required'=>'You have not entered billing mobile',
+                'billing_name.required'=>'Bạn chưa nhập tên',
+                'billing_address.required'=>'Bạn chưa nhập địa chỉ',
+                'billing_city.required'=>'Bạn chưa nhập thành phố',
+                'billing_state.required'=>'Bạn chưa nhập quận/huyện',
+                'billing_ward.required'=>'Bạn chưa nhập phường/xã',
+                'billing_mobile.required'=>'Bạn chưa nhập số điện thoại',
 
             ]);
 

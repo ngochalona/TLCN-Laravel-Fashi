@@ -68,7 +68,7 @@
                         </div>
 
                         <div class="reset-button">
-                            <input type="submit" class="btn btn-success" value="Add Atributes">
+                            <input type="submit" class="btn btn-success" value="Add Attributes">
                         </div>
                     </form>
                 </div>

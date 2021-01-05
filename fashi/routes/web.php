@@ -139,8 +139,9 @@ Route::group(['middleware' => ['AdminLogin']], function () {
     Route::post('admin/update-order-status', 'OrdersController@updateOrderStatus');
     // Customer route
     Route::get('admin/customers', 'CustomerController@viewCustomers');
-    Route::get('admin/update-customer-status/{id}', 'CustomerController@updateStatus' );
+    Route::get('admin/restore-cus-delete/{id}', 'CustomerController@restore' );
     Route::get('/admin/delete-customer/{id}', 'CustomerController@deleteCustomer');
+    Route::match(['get', 'post'], '/admin/restore-cus', 'CustomerController@viewRestoreCus');
 
     //Blog route
     Route::match(['get', 'post'], '/admin/view_blogs', 'BlogController@viewBlogs');

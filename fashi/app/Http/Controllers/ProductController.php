@@ -28,13 +28,6 @@ class ProductController extends Controller
     {
         if($request->isMethod('post'))
         {
-            $this->validate($request,[
-                'product_description'=>'max:250',
-
-            ],[
-
-                'product_description.max'=>"Max Description is 250 characters",
-            ]);
             $data = $request->all();
             $product = new Product;
             $product->category_id = $data['category_id'];
@@ -165,12 +158,12 @@ class ProductController extends Controller
         if($curentStatus == 1)
         {
             Product::where('id', $id)->update(['status' => 0]);
-            echo "Ẩn";
+            echo "Hiện";
         }
         if($curentStatus == 0)
         {
             Product::where('id', $id)->update(['status' => 1]);
-            echo "Hiện";
+            echo "Ẩn";
         }
     }
 
@@ -184,12 +177,12 @@ class ProductController extends Controller
         if($curentStatus == 1)
         {
             Product::where('id', $id)->update(['hot' => 0]);
-            echo "Ẩn";
+            echo "Hiện";
         }
         if($curentStatus == 0)
         {
             Product::where('id', $id)->update(['hot' => 1]);
-            echo "Hiện";
+            echo "Ẩn";
         }
     }
 
@@ -203,12 +196,12 @@ class ProductController extends Controller
         if($curentStatus == 1)
         {
             Product::where('id', $id)->update(['new' => 0]);
-            echo "Ẩn";
+            echo "Hiện";
         }
         if($curentStatus == 0)
         {
             Product::where('id', $id)->update(['new' => 1]);
-            echo "Hiện";
+            echo "Ẩn";
         }
     }
 

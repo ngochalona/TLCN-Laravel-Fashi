@@ -64,7 +64,7 @@
                                         <label for="pass">New Password *</label>
                                         <input type="password" id="new_pwd" name="new_pwd">
                                     </div>
-                                    <button type="submit" class="site-btn login-btn dangnhap">Change</button>
+                                    <button type="submit" class="site-btn login-btn dangnhap">Cập nhật</button>
                                 </form>
 
                             </div>

@@ -94,7 +94,7 @@
                                     <td>{{ $order->order_status }}</td>
                                     <td>{{ $order->payment_method }}</td>
                                     <td class="center">
-                                        <a href="{{url('/admin/orders/'.$order->id)}}" target="_blank" class="btn btn-primary btn-sm">View Order Details</a> <br><br>
+                                        <a href="{{url('/admin/orders/'.$order->id)}}" target="_blank" class="btn btn-primary btn-sm">Xem chi tiết</a> <br><br>
 
                                     </td>
                                 </tr>

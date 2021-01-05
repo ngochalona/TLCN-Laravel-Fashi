@@ -39,13 +39,13 @@ class UsersController extends Controller
             ]);
 
             $data = $request->all();
-            if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
+            if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]) && !Auth::user()->isDelete)
             {
-                $userStatus = User::where(['email' => $data['email']])->first();
-                if($userStatus->status == 0)
-                {
-                    return redirect()->back()->with('flash_message_error', 'Tài khoản chưa được kích hoạt. Kích hoạt tài khoản trong email của bạn. ');
-                }
+//                $userStatus = User::where(['email' => $data['email']])->first();
+//                if($userStatus->status == 0)
+//                {
+//                    return redirect()->back()->with('flash_message_error', 'Tài khoản chưa được kích hoạt. Kích hoạt tài khoản trong email của bạn. ');
+//                }
                 Session::put('frontSession',$data['email']);
                 if(!empty(Session::get('session_id')))
                 {
@@ -152,7 +152,8 @@ class UsersController extends Controller
 
     public function account(Request $request)
     {
-        return view('fashi.users.account');
+        $pass = Auth::user()->password;
+        return view('fashi.users.account', compact('pass'));
     }
     public function changePassword(Request $request)
     {
@@ -169,11 +170,11 @@ class UsersController extends Controller
                 $new_pwd = bcrypt($data['new_pwd']);
                 //update pass new vao id cua user do
                 User::where('id',Auth::User()->id)->update(['password'=>$new_pwd]);
-                return redirect()->back()->with('flash_message_success','Password is changed now!');
+                return redirect()->back()->with('flash_message_success','Mật khẩu đổi thành công');
             }
             else
             {
-                return redirect()->back()->with('flash_message_error','Old Password is Incorrect');
+                return redirect()->back()->with('flash_message_error','Mật khẩu cũ không khớp ');
             }
         }
         return view('fashi.users.change_password');
@@ -195,7 +196,7 @@ class UsersController extends Controller
             $users->ward = $data['ward'];
             $users->mobile = $data['mobile'];
             $users->save();
-            return redirect()->back()->with('flash_message_success','Account Details has been updated');
+            return redirect()->back()->with('flash_message_success','Cập nhật thông tin thành công');
         }
         return view('fashi.users.change_address', compact('userDetails'));
     }
@@ -232,8 +233,10 @@ class UsersController extends Controller
         $existingUser = User::where('email', $user->email)->first();
 
         if($existingUser){
-            // log them in
-            auth()->login($existingUser, true);
+            if(!$existingUser->isDelete)
+                auth()->login($existingUser, true);
+            else
+                return redirect('/userLogin')->with('flash_message_error','Tài khoản google bị khóa');
         } else {
             // create a new user
             $newUser                  = new User;
@@ -247,6 +250,7 @@ class UsersController extends Controller
 
         Session::put('frontSession',$user->email);
         return redirect()->to('/');
+
     }
     public function redirect($provider)
     {
@@ -257,7 +261,10 @@ class UsersController extends Controller
         $getInfo = Socialite::driver($provider)->stateless()->user();
         $user = $this->createUser($getInfo,$provider);
         if($user != null) {
-            auth()->login($user);
+            if(!$user->isDelete)
+                auth()->login($user);
+            else
+                return redirect('/userLogin')->with('flash_message_error','Tài khoản facebook bị khóa');
             Session::put('frontSession',$user->email);
             return redirect()->to('/');
         }

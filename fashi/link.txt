@@ -18,3 +18,9 @@ làm tỉnh thành
 khi client show bất kì cái j thì phải kt có isDelete k
 
 không tắt đc sp theo subcat mà cat parent bị delete
+
+
+tltn
+review đánh giá sao
+chia quyền nhân viên client admin user
+reactjs

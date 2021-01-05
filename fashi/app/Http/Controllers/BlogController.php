@@ -122,12 +122,12 @@ class BlogController extends Controller
         if($curentStatus == 1)
         {
             Blog::where('id', $id)->update(['status' => 0]);
-            echo "Unactive";
+            echo "Hiện";
         }
         if($curentStatus == 0)
         {
             Blog::where('id', $id)->update(['status' => 1]);
-            echo "Active";
+            echo "Ẩn";
         }
     }
 

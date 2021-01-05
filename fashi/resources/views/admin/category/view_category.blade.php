@@ -56,7 +56,7 @@
                    </div>
                    <div class="btn-group">
                     <div class="buttonexport" id="buttonlist">
-                       <a class="btn btn-add" href="{{ url('/admin/restore-category') }}" title="khôi phục loại sản phẩm đã xóa"> <i class="fa fa-trash-restore"></i> Khôi phục
+                       <a class="btn btn-add" href="{{ url('/admin/restore-category') }}" title="khôi phục loại sản phẩm đã xóa"> <i class="fa fa-arrow-circle-up"></i> Khôi phục
                        </a>
                     </div>
 
@@ -89,9 +89,9 @@
                                             >
 
                                             @if ($category->status == "1")
-                                                Hiện
-                                            @else
                                                 Ẩn
+                                            @else
+                                                Hiện
                                             @endif
                                         </button>
 

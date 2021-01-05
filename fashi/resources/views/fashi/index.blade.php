@@ -21,16 +21,16 @@
         <div class="item active">
             <img src="front_assets/images/slide-1.jpg" alt="Chania">
             <div class="carousel-caption">
-                <h1 style="color: #000000; text-transform: uppercase; letter-spacing: 2px; font-family:Georgia;">fashi clothes shop</h1>
-                <p style="color: #000000; font-size: 20px; letter-spacing: 1px; font-family:Georgia;" >Fashi is always so much fun!</p>
+                <h1 style="color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family:Georgia;">fashi clothes shop</h1>
+                <p style="color: #ffffff; font-size: 20px; letter-spacing: 1px; font-family:Georgia;" >Fashi is always so much fun!</p>
             </div>
         </div>
     @foreach ($banners as $banner)
         <div class="item">
             <img src="uploads/banners/{{ $banner->image }}" alt="Chicago">
             <div class="carousel-caption">
-                <h1 style="color: #000000; text-transform: uppercase; letter-spacing: 2px; font-family:Georgia;">{{ $banner->name }}</h1>
-                <p style="color: #000000; font-size: 20px; letter-spacing: 1px; font-family:Georgia;">{{ $banner->content }}</p>
+                <h1 style="color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family:Georgia;">{{ $banner->name }}</h1>
+                <p style="color: #ffffff; font-size: 20px; letter-spacing: 1px; font-family:Georgia;">{{ $banner->content }}</p>
             </div>
         </div>
     @endforeach

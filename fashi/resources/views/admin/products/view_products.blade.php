@@ -60,7 +60,7 @@
                    </div>
                     <div class="btn-group">
                         <div class="buttonexport" id="buttonlist">
-                            <a class="btn btn-add" href="{{ url('/admin/discounted-price') }}"> <i class="fa fa-plus"></i> Nhập giá giảm
+                            <a class="btn btn-add" href="{{ url('/admin/discounted-price') }}"> <i class="fa fa-money"></i> Nhập giá giảm
                             </a>
                         </div>
                     </div>
@@ -84,6 +84,11 @@
                          </thead>
                          <tbody>
                              @foreach ($products as $product)
+                             <?php /** @var TYPE_NAME $product */
+                                $cate = DB::table('categories')->where('id', $product->category_id)->first();
+                                if(!$cate->isDelete)
+                                {
+                             ?>
                                 <tr>
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->name }}</td>
@@ -101,9 +106,9 @@
                                             >
 
                                             @if ($product->status == "1")
-                                                Hiện
-                                            @else
                                                 Ẩn
+                                            @else
+                                                Hiện
                                             @endif
                                         </button>
                                     </td>
@@ -112,9 +117,9 @@
                                             >
 
                                             @if ($product->hot == "1")
-                                                Hiện
-                                            @else
                                                 Ẩn
+                                            @else
+                                                Hiện
                                             @endif
                                         </button>
                                     </td>
@@ -123,9 +128,9 @@
                                             >
 
                                             @if ($product->new == "1")
-                                                Hiện
-                                            @else
                                                 Ẩn
+                                            @else
+                                                Hiện
                                             @endif
                                         </button>
                                     </td>
@@ -136,6 +141,7 @@
                                         <a href="{{url('/admin/delete-product/'.$product->id) }}"  title="xóa sản phẩm" type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> </a>
                                     </td>
                                 </tr>
+                             <?php  } ?>
                              @endforeach
 
 

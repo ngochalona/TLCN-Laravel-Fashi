@@ -26,12 +26,12 @@ class BannersController extends Controller
         if($curentStatus == 1)
         {
             Banners::where('id', $id)->update(['status' => 0]);
-            echo "Ẩn";
+            echo "Hiện";
         }
         if($curentStatus == 0)
         {
             Banners::where('id', $id)->update(['status' => 1]);
-            echo "Hiện";
+            echo "Ẩn";
         }
     }
 

@@ -30,7 +30,6 @@ class IndexController extends Controller
 
         $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
 
-
         return view('fashi.index',compact('banners','newProducts','hotProducts','countBanners','categories'));
     }
 
