@@ -1,17 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <base href="{{ asset('')}}">
-    <link rel="stylesheet" type="text/css" href="front_assets/css/style.css" >
-    <link rel="stylesheet" type="text/css" href="front_assets/css/bootstrap.min.css" >
-    <link href="front_assets/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-    <link href="front_assets/css/normalize.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="front_assets/slider/style.css">
-    <script src="front_assets/js/fontawesomekit.js" crossorigin="anonymous"></script>
+    <title>Fashi for all</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="front_assets/test/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="front_assets/test/css/style.css" type="text/css">
+    <script src="front_assets/test/js/fontawesomekit.js" crossorigin="anonymous"></script>
 
-    <title>Fashi Shop</title>
+<style>
+    body{
+        font-family: 'Roboto Slab', serif;
+    }
+</style>
 </head>
 <body>
     @include('fashi.layouts.header')
@@ -21,9 +41,6 @@
     @include('fashi.layouts.footer')
 
 
-    <script type="text/javascript" src="front_assets/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="front_assets/js/bootstrap.min.js"></script>
-    <script src="front_assets/js/main.js"></script>
     <script>
         $(document).ready(function(){
             $("#selSize").change(function(){
@@ -76,7 +93,19 @@
 
     </script>
     @yield('script')
+
+
+    <!-- Js Plugins -->
+    <script src="front_assets/test/js/jquery-3.3.1.min.js"></script>
+    <script src="front_assets/test/js/bootstrap.min.js"></script>
+    <script src="front_assets/test/js/jquery.nice-select.min.js"></script>
+    <script src="front_assets/test/js/jquery-ui.min.js"></script>
+    <script src="front_assets/test/js/jquery.slicknav.js"></script>
+    <script src="front_assets/test/js/mixitup.min.js"></script>
+    <script src="front_assets/test/js/owl.carousel.min.js"></script>
+    <script src="front_assets/test/js/main.js"></script>
 </body>
+
 </html>
 
 

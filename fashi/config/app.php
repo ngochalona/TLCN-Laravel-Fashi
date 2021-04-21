@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Elasticquent\ElasticquentServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -229,8 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Image' => Intervention\Image\Facades\Image::class,
-
-
+        'Es' => Elasticquent\ElasticquentElasticsearchFacade::class,
     ],
 
 ];

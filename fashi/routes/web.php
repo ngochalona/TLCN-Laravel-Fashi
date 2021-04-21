@@ -10,13 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Product;
 
-Route::post('timkiem', 'ProductController@timKiem');
 Route::match(['get', 'post'], '/', 'IndexController@index');
 Route::get('product/{id}', 'ProductController@products');
 Route::get('subcategories/{id}', 'IndexController@subcategories');
 Route::get('categories/{id}', 'IndexController@categories');
 Route::get('/get-product-stock', 'ProductController@getStock');
+Route::get('/showProductByCate/{id}', 'IndexController@showProductByCate');
+// Route for elasticsearch
+Route::get('elasticSearch', 'ProductController@elasticSearch');
 // route for login register
 Route::match(['get', 'post'], '/userLogin', 'UsersController@userLogin');
 Route::match(['get', 'post'], '/userRegister', 'UsersController@userRegister');
@@ -51,9 +54,11 @@ Route::get('/about', 'IndexController@about');
 // route for blog
 Route::get('/blog', 'BlogController@blog');
 
+Route::get('/test-es','ProductController@makeIndexData');
 
 Route::match(['get', 'post'], '/admin', 'AdminController@login')->name('admin_login');
 
+Route::get('/rating/{id}/{star}','ProductController@rating');
 
 //{1. tao php middleware 'frontLogin' 2.vao kernel add middleware }
 // route for middleeware after frontLogin

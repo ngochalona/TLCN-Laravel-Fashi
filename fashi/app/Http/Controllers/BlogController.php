@@ -16,7 +16,7 @@ class BlogController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where(['isDelete' => 0, 'status' => 1])->get();
             View::share('categoriess',$categoriess);
         });
 
@@ -25,7 +25,7 @@ class BlogController extends Controller
     // Client Show blog
     public function blog()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::where('isDelete', 0)->where('status', 1)->get();
         return view('fashi.blog', compact('blogs'));
     }
 

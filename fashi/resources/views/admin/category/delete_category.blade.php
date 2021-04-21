@@ -68,7 +68,6 @@
                             <tr class="info">
                                 <th>ID</th>
                                <th>Loại sản phẩm</th>
-                               <th>Parent ID</th>
                                <th>Url</th>
                                <th>Trạng thái</th>
 
@@ -79,7 +78,6 @@
                                 <tr class="{{$category->id}}">
                                     <td>{{ $category->id }}</td>
                                     <td>{{ $category->name }}</td>
-                                    <td>{{ $category->parent_id }}</td>
                                     <td>{{ $category->url }}</td>
                                     <td>
 

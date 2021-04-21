@@ -2,21 +2,69 @@
 
 @section('content')
 
-        <!-- Breadcrumb Section Begin -->
-        <div class="breacrumb-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-text product-more">
-                            <a href="{{url('/')}}"><i class="fa fa-home"></i> Trang chủ</a>
-                            <a href="{{url('/cart')}}">Giỏ hàng</a>
-                            <a href="{{url('/')}}">Checkout</a>
-                            <span>thanks</span>
+
+<!-- Hero Section Begin -->
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Loại Sản Phẩm</span>
+                    </div>
+
+                    <ul>
+                        @foreach ($categoriess as $category)
+                            @if ($category->status == 1)
+                                <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="{{ url('/elasticSearch')}}" method="get"> {{csrf_field()}}
+                            <input type="text" name="search" placeholder="Bạn cần kiếm đồ?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0966060152</h5>
+                            <span>hỗ trợ 24/7</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="front_assets/test/images/5.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text" >
+                    <h2 style="font-family: 'Roboto Slab', serif; letter-spacing: 2px;">Cảm ơn đã ủng hộ</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ url('/')}}">Trang chủ</a>
+                        <span>Sản phẩm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
         <!-- Breadcrumb Section Begin -->
 
             <div class="container">
@@ -43,34 +91,31 @@
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-
-
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-warning" style="margin-bottom: -15px">
-                        <div class="panel-heading"  style="background-color: #E7AB3C !important; color: #000000; text-align:center">
-                            <h4 class="panel-title">
-                            <a style="text-decoration: none;    font-size: 35px;" data-toggle="collapse" data-parent="#accordion" href="#toggle">
-                                Cảm ơn bạn đã mua hàng</a>
-                            </h4>
-                        </div>
-                        <div id="toggle" class="panel-collapse collapse in" >
-                            <ul class="list-group">
-                                    <li  style="background-color: #FCF8E3 !important;text-align:center" class="list-group-item">
-                                        <div href="" style="color: #000000; text-decoration:none;"><h4>YOUR COD ORDER HAS BEEN PLACED</h4>
-                                            <p>Mã đơn hàng <b>{{Session::get('order_id')}}</b> và số tiền cần thanh toán là <b>${{Session::get('grand_total')}}</b></p></div>
-                                    </li>
-                            </ul>
-                        </div>
+                <div class="col-lg-6 offset-lg-3">
+                    <div id="accordion">
+                        <div class="card">
+                          <div class="card-header" style="background-color: #7fad39 !important; color: #000000; text-align:center;">
+                            <h3 class="card-link" style="color: #fff;  font-family: 'Roboto Slab', serif;" data-toggle="collapse" href="#collapseOne">
+                                Cảm ơn quý khách đã đặt hàng
+                            </h3>
+                          </div>
+                          <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                            <div class="card-body">
+                                Đơn hàng đang được xử lý, yêu cầu quý khách kiểm tra email.
+                                Mã đơn hàng <b>{{Session::get('order_id')}}</b> và số tiền cần thanh toán là <b>${{Session::get('grand_total')}}</b>
+                            </div>
+                          </div>
                         </div>
 
-                    </div>
+                      </div>
 
                 </div>
             </div>
+
+
+
         </div>
     </section>
-    <!-- Shopping Cart Section End -->
 @endsection
 
 

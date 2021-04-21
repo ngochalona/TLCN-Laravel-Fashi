@@ -28,7 +28,7 @@ class CartController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where(['isDelete' => 0, 'status' => 1])->get();
             View::share('categoriess',$categoriess);
         });
 
@@ -110,9 +110,15 @@ class CartController extends Controller
         // duyệt từng sp trong giỏ hàng
         foreach($userCart as $key=>$products)
         {
+            $productAtt = ProductsAttributes::where(['product_id' => $products->product_id, 'sku' => $products->product_sku, 'size' => $products->size])->first();
+            $stock = $productAtt->stock;
+            if($stock == 0 || $products->quantity > $stock)
+            {
+                // unset( $userCart[$key]);
+                $userCart[$key]->available = 0;
+                DB::table('cart')->where('id', $userCart[$key]->id)->update(['available' => 0]);
+            }
             $productDetails = Product::where(['id' => $products->product_id])->first();
-            // gán ảnh của sp đó trong bảng Product cho ảnh của sp trong giỏ hàng
-            // chuỗi json $userCart thêm vào field image, dưới cart không có image
             $userCart[$key]->image = $productDetails->image ;
         }
 
@@ -203,8 +209,6 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
-        // cac col trong Auth va User giong nhau
-        //lay id cua user dang login
         $user_id = Auth::user()->id;
         $user_email = Auth::user()->email;
 
@@ -218,7 +222,10 @@ class CartController extends Controller
         $userCart = DB::table('cart')->where('user_email', $user_email)->orWhere('session_id', $session_id)->get();
         foreach ($userCart as $key => $product) {
             $productDetails = Product::where('id', $product->product_id)->first();
-            $userCart[$key]->image = $productDetails->image;
+            if($userCart[$key]->available == 0)
+                unset( $userCart[$key]);
+            else
+                $userCart[$key]->image = $productDetails->image;
         }
 
         if($request->isMethod('post'))
@@ -286,7 +293,7 @@ class CartController extends Controller
             $order_id = DB::getPdo()->lastinsertID();
 
             // Add vào orderDetails
-            $cartProducts = DB::table('cart')->where(['user_email' => $user_email])->orWhere('session_id', $session_id)->get();
+            $cartProducts = DB::table('cart')->where(['user_email' => $user_email, 'available' => 1])->orWhere('session_id', $session_id)->get();
             foreach($cartProducts as $pro)
             {
                 $cartPro = new OrdersDetails;// bảng orderDetails
@@ -350,7 +357,7 @@ class CartController extends Controller
         // Xóa session coupon sau khi đã đặt hàng xong
         Session::forget('CouponAmount');
         Session::forget('CouponCode');
-
+        Session::forget('session_id');
         return view('fashi.orders.thanks');
     }
 
@@ -410,11 +417,11 @@ class CartController extends Controller
                 $cartPro->product_qty = $pro->quantity;
                 $cartPro->save();
                 $getStock = ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->first();
-                $stock = $getStock->stock;
+                $stock = $getStock->stock;// Trừ hàng trong kho
                 ProductsAttributes::where(['sku'=>$pro->product_sku, 'product_id'=>$pro->product_id])->update(['stock' => $stock - $pro->quantity]);
             }
 
-            // Trừ hàng trong kho
+            // xóa sp trong giỏ
             DB::table('cart')->where('user_email', $user_email)->orWhere('session_id', $session_id)->delete();
 
             // Duyệt trạng thái đã thanh toán trong bảng order
@@ -443,6 +450,7 @@ class CartController extends Controller
             // Xóa session coupon sau khi đã đặt hàng xong
             Session::forget('CouponAmount');
             Session::forget('CouponCode');
+            Session::forget('session_id');
             return redirect()->back()->with('flash_message_success','Your Payment Successfully Done!');
         }
         return view('fashi.orders.stripe');
@@ -463,7 +471,7 @@ class CartController extends Controller
         $orderDetails = Order::with('orders')->where('id', $order_id)->first();
         $user_id = $orderDetails->user_id;
         $userDetails = User::where('id', $user_id)->first();
-        return view('fashi.orders.user_order_details',compact('orderDetails','userDetails'));
+        return view('fashi.orders.user_order_details',compact('orderDetails','userDetails', 'order_id'));
     }
 
     public function updateQuantityDec($id=null)

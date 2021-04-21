@@ -36,7 +36,7 @@ class LoginController extends Controller
     public function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where(['isDelete' => 0, 'status' => 1])->get();
             View::share('categoriess',$categoriess);
         });
         $this->middleware('guest')->except('logout');

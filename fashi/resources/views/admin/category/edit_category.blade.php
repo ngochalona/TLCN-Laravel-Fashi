@@ -49,21 +49,6 @@
                             <input type="text" class="form-control" value="{{$categoryDetails->name}}" name="category_name" id="category_name" required>
                         </div>
                         <div class="form-group">
-                            <label>Parent Category</label>
-                            <select name="parent_id" id="parent_id" class="form-control">
-                                <option value="0">Parent Category</option>
-
-                                @foreach ($levels as $level)
-                                    <option value="{{$level->id}}"
-                                        @if ($level->id == $categoryDetails->parent_id)
-                                            selected
-                                        @endif>
-                                            {{$level->name}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>Url</label>
                             <input type="text" class="form-control" value="{{$categoryDetails->url}}"  name="category_url" id="category_url" required>
                         </div>

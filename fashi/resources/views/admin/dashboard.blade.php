@@ -91,7 +91,7 @@
                     <div class="panel panel-bd lobidisable">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <h4>Doanh thu năm 2020</h4>
+                                <h4>Doanh thu năm {{date("Y")}}</h4>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -116,12 +116,13 @@
 
 <script type="text/javascript">
    var doanhthu = <?php echo json_encode($dataPoints);?>;
-
+   var d = new Date();
+   var n = d.getFullYear();
     window.onload = function () {
         var chart = new CanvasJS.Chart("chartContainer", {
 
             title:{
-                text: "Doanh thu trong năm 2020"
+                text: "Doanh thu trong năm " + n
             },
             axisY: {
                 interval: 500

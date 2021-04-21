@@ -1,21 +1,68 @@
 @extends('fashi.layouts.master')
 
 @section('content')
+<!-- Hero Section Begin -->
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Loại Sản Phẩm</span>
+                    </div>
 
-        <!-- Breadcrumb Section Begin -->
-        <div class="breacrumb-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb-text product-more">
-                            <a href="{{url('/')}}"><i class="fa fa-home"></i> Trang chủ</a>
-                            <span>Giỏ hàng</span>
+                    <ul>
+                        @foreach ($categoriess as $category)
+                            @if ($category->status == 1)
+                                <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="{{ url('/elasticSearch')}}" method="get"> {{csrf_field()}}
+                            <input type="text" name="search" placeholder="Bạn cần kiếm đồ?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0966060152</h5>
+                            <span>hỗ trợ 24/7</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Breadcrumb Section Begin -->
+    </div>
+</section>
+<!-- Hero Section End -->
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="front_assets/test/images/5.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text" >
+                    <h2 style="font-family: 'Roboto Slab', serif; letter-spacing: 2px;">Giỏ hàng</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ url('/')}}">Trang chủ</a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
 
         <div class="container">
             @if (Session::has('flash_message_error'))
@@ -37,93 +84,123 @@
         @endif
         </div>
 
-    <!-- Shopping Cart Section Begin -->
-    <section class="shopping-cart spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="cart-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Ảnh</th>
-                                    <th class="p-name">Sản phẩm</th>
-                                    <th>Size</th>
-                                    <th>Giá</th>
-                                    <th>Số lượng</th>
-                                    <th>Tổng tiền</th>
-                                    <th>X</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $total_amount = 0; ?>
-                                @foreach ($userCart as $cart)
-
-                                    <tr>
-                                        <td class="cart-pic first-row"><img style="width: 170px; height: 170px;  border-radius: 5%;" src="uploads/products/{{$cart->image}}" alt=""></td>
-                                        <td class="cart-title first-row">
-                                            <h5 class="product-name">{{$cart->product_name}}</h5>
-                                        </td>
-                                        <td class="p-price first-row">{{$cart->size}}</td>
-                                        <td class="p-price first-row">${{$cart->price}}</td>
-                                        <td class="quantity-box">
-
- <span   onclick="updateQuantityDec({{$cart->id}})"  style="font-size: 25px; color: black; cursor: pointer;">-</span>
-
- <input id="{{$cart->id}}" style="width:100px ;border: 2px solid #b2b2b2;text-align: center;padding:2px;font-size: 16px" type="text" size="4" value="{{$cart->quantity}}" min="0" step="1" class="c-input-text qty text" readonly>
-
- <span onclick="updateQuantityInc({{$cart->id}})"  style="font-size: 25px; color: black; cursor: pointer;">+</span>
 
 
-                                            </td>
-                                        <td class="total-price first-row" id="{{$cart->id}}-itemtotal">{{$cart->price * $cart->quantity}}</td>
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Sản phẩm</th>
+                                <th>Size</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng</th>
+                                <th>X</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $total_amount = 0; ?>
+                            @foreach ($userCart as $cart)
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="uploads/products/{{$cart->image}}" style="width: 170px; height: 170px;  border-radius: 5%;" alt="">
+                                    <h5>{{$cart->product_name}}</h5>
+                                    @if ($cart->available == 0)
+                                        <span>(hết hàng)</span>
+                                    @endif
+                                </td>
+                                <td class="shoping__cart__price">
+                                    {{$cart->size}}
+                                </td>
+                                <td class="shoping__cart__price">
+                                    {{$cart->price}}
+                                </td>
+                                @if ($cart->available == 0)
+                                    <td class="shoping__cart__quantity">
+                                        <input id="{{$cart->id}}" style="width:100px ;border: 2px solid #b2b2b2;text-align: center;padding:2px;font-size: 16px" type="text" size="4" value="{{$cart->quantity}}" min="0" step="1" class="c-input-text qty text" readonly>
+                                    </td>
+                                @else
+                                    <td class="shoping__cart__quantity">
+                                        <span   onclick="updateQuantityDec({{$cart->id}})"  style="font-size: 25px; color: black; cursor: pointer;">-</span>
 
-                                        <td class="close-td first-row"><a style="color: black" href="{{url('/cart/delete-product/'.$cart->id)}}">X</a></td>
-                                    </tr>
-                                    <?php $total_amount += ($cart->price * $cart->quantity) ?>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="cart-buttons">
-                                <a href="#" class="primary-btn up-cart" style="text-decoration: none; font-size: 14px;  text-transform: uppercase;">Tiếp tục mua sắm</a>
-                            </div>
-                            <div class="discount-coupon">
-                                <h6 style="font-size: 16px;">Nhập mã giảm giá</h6>
-                                <form action="{{url('/cart/apply-coupon')}}" method="post" class="coupon-form">{{csrf_field()}}
-                                    <select name="coupon_code" id="" style=" width: 100%;height: 40px;padding: 5px;border: #d5d3d3 solid 2px;">
-                                        <option value="">Enter your codes</option>
-                                        @foreach($coupons as $coupon)
-                                            <option value="{{ $coupon->coupon_code }}">{{ $coupon->coupon_code }}</option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="site-btn coupon-btn" style="font-size: 14px;  text-transform: uppercase;">Áp dụng</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-lg-4"></div>
-                        <div class="col-lg-4">
-                            <div class="proceed-checkout">
-                                <ul>
-                                    <?php $coupon = 0  ?>
-                                    <li class="subtotal">Tạm tính <span id="Subtotal">{{$total_amount}}</span></li>
-                                @if (!empty(Session::get('CouponAmount')))
-                                    <?php $coupon = Session::get('CouponAmount') ?>
+                                        <input id="{{$cart->id}}" style="width:100px ;border: 2px solid #b2b2b2;text-align: center;padding:2px;font-size: 16px" type="text" size="4" value="{{$cart->quantity}}" min="0" step="1" class="c-input-text qty text" readonly>
+
+                                        <span onclick="updateQuantityInc({{$cart->id}})"  style="font-size: 25px; color: black; cursor: pointer;">+</span>
+                                    </td>
                                 @endif
-                                    <li class="subtotal">Giảm giá <span id="coupon">{!! $coupon !!}</span></li>
-                                    <li class="cart-total">Tổng tiền <span id="total">{!! $total_amount - $coupon !!}</span></li>
-                                </ul>
-                                <a href="{{url('/checkout')}}" class="proceed-btn" style="text-decoration: none;">TIẾN HÀNH ĐẶT HÀNG</a>
-                            </div>
-                        </div>
-                    </div>
+
+                                @if ($cart->available == 0)
+                                    <td class="shoping__cart__total">
+                                        0  VND
+                                    </td>
+                                @else
+                                    <td class="shoping__cart__total" id="{{$cart->id}}-itemtotal">
+                                        {{$cart->price * $cart->quantity}}  VND
+                                    </td>
+                                @endif
+
+                                <td class="shoping__cart__item__close">
+                                    <a style="color: black" href="{{url('/cart/delete-product/'.$cart->id)}}">X</a>
+                                </td>
+                            </tr>
+                            <?php
+
+                                if ($cart->available != 0)
+                                    $total_amount += ($cart->price * $cart->quantity)
+                            ?>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Shopping Cart Section End -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="{{url('/')}}" class="primary-btn cart-btn">TIẾP TỤC MUA SẮM</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Mã giảm giá</h5>
+                        <form action="{{url('/cart/apply-coupon')}}" method="post" class="coupon-form">{{csrf_field()}}
+                            <select name="coupon_code" id="" >
+                                <option value="">Chọn mã giảm giá</option>
+                                @foreach($coupons as $coupon)
+                                    <option value="{{ $coupon->coupon_code }}">{{ $coupon->coupon_code }}</option>
+                                @endforeach
+                            </select>
+                            <button style="margin-left: 20px; height: 50px" type="submit" class="site-btn">ÁP DỤNG</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Tổng tiền</h5>
+                    <ul>
+                        <?php $coupon = 0  ?>
+
+                        <li>Tạm tính <span id="Subtotal">{{$total_amount}}  VND</span></li>
+                        @if (!empty(Session::get('CouponAmount')))
+                            <?php $coupon = Session::get('CouponAmount') ?>
+                        @endif
+                            <li>Giảm giá <span id="coupon">{!! $coupon !!}  VND</span></li>
+                            <li>Thành tiền <span id="total">{!! $total_amount - $coupon !!} VND</span></li>
+                    </ul>
+                    <a href="{{url('/checkout')}}" class="primary-btn">TIẾN HÀNH ĐẶT HÀNG</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shoping Cart Section End -->
 @endsection
 
 
@@ -150,8 +227,9 @@
                     document.getElementById(idCart+"-itemtotal").innerText = itemTotal;
 
                     var subtotal = parseInt(currentSubtotal) - parseInt(currentItemTotal) + parseInt(itemTotal);
-                    document.getElementById("Subtotal").innerText = parseInt(subtotal);
-                    document.getElementById("total").innerText = parseInt(subtotal) - parseInt(currentCoupon);
+                    document.getElementById("Subtotal").innerText = parseInt(subtotal) + ' VND';
+                    var total = parseInt(subtotal) - parseInt(currentCoupon);
+                    document.getElementById("total").innerText = total + ' VND';
                  });
             }
             function updateQuantityInc(idCart)
@@ -183,25 +261,14 @@
                             document.getElementById(idCart+"-itemtotal").innerText = itemTotal;
 
                             var subtotal = parseInt(currentSubtotal) - parseInt(currentItemTotal) + parseInt(itemTotal);
-                            document.getElementById("Subtotal").innerText = parseInt(subtotal);
-                            document.getElementById("total").innerText = parseInt(subtotal) - parseInt(currentCoupon);
+                            document.getElementById("Subtotal").innerText = parseInt(subtotal) + ' VND';
+                            var total = parseInt(subtotal) - parseInt(currentCoupon);
+                            document.getElementById("total").innerText = total + ' VND';
                         });
                     }
                 });
 
             }
-
-
-        if(window.location.pathname === '/cart')
-        {
-            $(".home").css("background-color", "#222222");
-            $(".about").css("background-color", "#222222");
-            $(".cart_a").css("color", "#FFFFFF");
-            $(".category").css("background-color", "#222222");
-            $(".contact").css("background-color", "#222222");
-            $(".blog").css("background-color", "#222222");
-            $(".cart").css("background-color", "#E7AB3C");
-        }
 
     </script>
 

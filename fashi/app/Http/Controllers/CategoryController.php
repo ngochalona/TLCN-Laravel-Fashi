@@ -14,15 +14,12 @@ class CategoryController extends Controller
             $data = $request->all();
             $category = new Category;
             $category->name = $data['category_name'];
-            $category->parent_id = $data['parent_id'];
             $category->url = $data['category_url'];
             $category->description = $data['category_description'];
             $category->save();
             return redirect('/admin/view-categories')->with('flash_message_success','Category has been added successfully');
         }
-        // lấy ra tất cả category cha
-        $levels = Category::where('isDelete', 0)->where(['parent_id' => 0])->get();
-        return view('admin.category.add_category', compact('levels'));
+        return view('admin.category.add_category');
     }
 
     public function viewCategories()
@@ -36,18 +33,14 @@ class CategoryController extends Controller
         if($request->isMethod('post'))
         {
             $data = $request->all();
-            Category::where(['id'=>$id])->update(['name'=>$data['category_name'],
-            'parent_id'=>$data['parent_id'], 'description'=>$data['category_description'],
+            Category::where(['id'=>$id])->update(['name'=>$data['category_name'], 'description'=>$data['category_description'],
             'url'=>$data['category_url']]);
 
             return redirect('/admin/view-categories')->with('flash_message_success','Category has been updated ');
         }
 
         $categoryDetails = Category::where(['id'=>$id])->first();
-
-        //lay ra tat ca category cha
-        $levels = Category::where('isDelete', 0)->where(['parent_id'=>0])->get();
-        return view('admin.category.edit_category', compact('levels','categoryDetails'));
+        return view('admin.category.edit_category', compact('categoryDetails'));
     }
 
     public function updateStatus($id=null)

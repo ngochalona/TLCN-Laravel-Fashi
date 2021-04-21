@@ -1,202 +1,339 @@
 @extends('fashi.layouts.master')
 
 @section('content')
-
-
-
-<!---------------------------- start slider----------------------- -->
-
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <?php /** @var TYPE_NAME $countBanners */
-        for($i=1; $i<= $countBanners; $i++) {?>
-    <li data-target="#myCarousel" data-slide-to="{!!$i!!}"></li>
-<?php } ?>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <img src="front_assets/images/slide-1.jpg" alt="Chania">
-            <div class="carousel-caption">
-                <h1 style="color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family:Georgia;">fashi clothes shop</h1>
-                <p style="color: #ffffff; font-size: 20px; letter-spacing: 1px; font-family:Georgia;" >Fashi is always so much fun!</p>
-            </div>
-        </div>
-    @foreach ($banners as $banner)
-        <div class="item">
-            <img src="uploads/banners/{{ $banner->image }}" alt="Chicago">
-            <div class="carousel-caption">
-                <h1 style="color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-family:Georgia;">{{ $banner->name }}</h1>
-                <p style="color: #ffffff; font-size: 20px; letter-spacing: 1px; font-family:Georgia;">{{ $banner->content }}</p>
-            </div>
-        </div>
-    @endforeach
-
-
-
-    </div>
-
-    <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-        </a>
-</div>
-
-<!---------------------------- end slider----------------------- -->
-
-
-
-
-
-
-
-
-    <!----------------------------start sidebar----------------------- -->
-    <div class="below-content">
-        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-            @foreach ($categories as $category)
-            @if ($category->status == 1)
-                <div class="panel-group" id="accordion">
-                    <div class="panel panel-warning" style="margin-bottom: -15px">
-                    <div class="panel-heading"  style="background-color: #E7AB3C !important; color: #000000">
-                        <h4 class="panel-title">
-                        <a style="text-decoration: none;font-family:Georgia; font-weight:bold" data-toggle="collapse" data-parent="#accordion" href="#{{$category->url}}">
-                        {{ $category->name}}</a>
-                        </h4>
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Loại Sản Phẩm</span>
                     </div>
-                    <div id="{{$category->url}}" class="panel-collapse collapse in" >
-                        <ul class="list-group">
-                            @foreach ($category->categories as $subcat)
-                            @if ($subcat->status == 1 && $subcat->isDelete == 0)
-                                <li  style="background-color: #FCF8E3 !important;" class="list-group-item">
-                                    <a href="{{ url('/subcategories/'. $subcat->id)}}" style="color: #000000; text-decoration:none;font-family:Georgia;">{{$subcat->name}}</a>
-                                </li>
+
+                    <ul>
+                        @foreach ($categoriess as $category)
+                            @if ($category->status == 1)
+                                <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
                             @endif
-
-                            @endforeach
-                        </ul>
-                    </div>
-                    </div>
-
+                        @endforeach
+                    </ul>
                 </div>
-            @endif
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="{{ url('/elasticSearch')}}" method="get"> {{csrf_field()}}
+                            <input type="text" name="search" placeholder="Bạn cần kiếm đồ?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0966060152</h5>
+                            <span>hỗ trợ 24/7</span>
+                        </div>
+                    </div>
+                </div>
 
+
+    <div id="demo" class="carousel slide" data-ride="carousel">
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="front_assets/test/images/slide-1.jpg" style="height: 300px" alt="Los Angeles" width="1100" height="500">
+            </div>
+            @foreach ($banners as $banner)
+                <div class="carousel-item">
+                    <img src="uploads/banners/{{ $banner->image }}" style="height: 300px" alt="Chicago" width="1100" height="500">
+                </div>
             @endforeach
-
-
-              <div class="card card-price">
-                <div class="card-img">
-                  <a href="#">
-                    <img src="front_assets/images/women-large.jpg" class="img-responsive">
-                    <div class="card-caption">
-                      <span class="h2 text-center">Big Item</span>
-                      <p>100% silk</p>
-                    </div>
-                  </a>
                 </div>
 
-              </div>
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                </a>
+            </div>
         </div>
-<!----------------------------end sidebar----------------------- -->
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
 
-        <!------------------------ sản phẩm ------------------------->
-        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
-            <!--start new product -->
-            <div class="row">
-                <div class="well text-center" style="background-color: #E7AB3C;font-family:Georgia;"><span style="font-size: 30px; ">SẢN PHẨM MỚI</span></div>
+
+
+
+<!-- All products Section Begin -->
+<section class="categories">
+    <div class="container">
+        <div class="row">
+            <div class="categories__slider owl-carousel">
+                @foreach ($products as $product)
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="uploads/products/{{ $product->image }}">
+                            <h5><a href="{{ url('/product/'.$product->id)}}">{{$product->name}}</a></h5>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-            <div class="row">
-                @if (!empty($newProducts))
-                    @foreach ($newProducts as $product)
-                        <?php /** @var TYPE_NAME $product */
-                        $cat_id = DB::table('categories')->where('id', $product->category_id)->get();
-                        if($cat_id[0]->isDelete == 0){
+        </div>
+    </div>
+</section>
+<!-- Products Section End -->
+
+<!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Featured Product</h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">All</li>
+                        @foreach ($categoriess as $category)
+                            @if ($category->status == 1)
+                                <li onclick="showProductByCate({{$category->id}})">{{$category->name}}</li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter showProduct">
+            @foreach ($products as $product)
+                <div class="col-lg-3 col-md-4 col-sm-6 mix">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="uploads/products/{{ $product->image }}">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="{{ url('/product/'.$product->id)}}"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">{{ $product->name }} VND</a></h6>
+                            <h5>{{ $product->discounted_price }}</h5>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+<!-- Featured Section End -->
+
+<!-- Banner Begin -->
+<div class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="front_assets/test/images/banner-3.jpg" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="front_assets/test/images/banner-4.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner End -->
+
+<!-- Latest Product Section Begin -->
+<section class="latest-product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="latest-product__text">
+                    <h4>Sản Phẩm Mới </h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <?php
+                            $j = 1;
+                            if($countNew % 3 == 0)
+                                $count = $countNew/3;
+                            else {
+                                $count = $countNew/3 + 1;
+                            }
                         ?>
-                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            <div class="card">
-                                <a href="{{ url('/product/'.$product->id)}}">
-                                    <img src="uploads/products/{{ $product->image }}" alt="Denim Jeans" style="width:100%">
-                                </a>
-                                <h5>{{ $product->name }}</h5>
-                                <p class="price">${{ $product->discounted_price }}</p>
-                                <p><a href="{{ url('/product/'.$product->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">Xem chi tiết</a></p>
+                        @for ($i = 1; $i <= $count; $i++)
+                            <div class="latest-prdouct__slider__item">
+                                @for ($j; $j <= $i * 3; $j++)
+                                    @if (isset($newProducts[$j-1]))
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img style="width: 150px; height: 150px; border-radius: 10%" src="uploads/products/{{ $newProducts[$j-1]->image }}" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+
+                                                    <h6>{{$newProducts[$j-1]->name}}</h6>
+                                                    <span>{{ $newProducts[$j-1]->discounted_price }}</span><span style="color: grey; text-decoration: line-through; font-weight: normal; ">{{ $newProducts[$j-1]->price }}</span>
+
+
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endfor
                             </div>
-                        </div>
-                        <?php  } ?>
-                    @endforeach
-                @endif
-            </div>
-            <div style="text-align: center">{{ $newProducts->links() }}</div>
-             <!--end new product -->
-            <!-- start hình -->
-            <div class="row" style="margin-top: 70px; margin-bottom: 70px;">
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <img src="front_assets/images/banner-1.jpg" class="img-rounded" alt="Cinque Terre"  width="304" height="200">
+                        @endfor
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <img src="front_assets/images/banner-2.jpg" class="img-rounded" alt="Cinque Terre"  width="304" height="200">
-                    </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <img src="front_assets/images/banner-3.jpg" class="img-rounded" alt="Cinque Terre"  width="304" height="200">
-                    </div>
-
+                </div>
             </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="latest-product__text">
+                    <h4>Sản Phẩm Hot</h4>
+                    <div class="latest-product__slider owl-carousel">
+                        <?php
+                            $j = 1;
+                            if($countHot % 3 == 0)
+                                $countH = $countHot/3;
+                            else {
+                                $countH = $countHot/3 + 1;
+                            }
+                        ?>
+                        @for ($i = 1; $i <= $countH; $i++)
+                            <div class="latest-prdouct__slider__item">
+                                @for ($j; $j <= $i * 3; $j++)
+                                    @if (isset($hotProducts[$j-1]))
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img style="width: 150px; height: 150px; border-radius: 10%" src="uploads/products/{{ $hotProducts[$j-1]->image }}" alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
 
-            <!-- end hình -->
-            <!-- start hot product -->
+                                                    <h6>{{$hotProducts[$j-1]->name}}</h6>
+                                                    <span>{{ $hotProducts[$j-1]->discounted_price }}</span><span style="color: grey; text-decoration: line-through; font-weight: normal; ">{{ $hotProducts[$j-1]->price }}</span>
 
-            <div class="row">
-                <div class="well text-center" style="background-color: #E7AB3C;font-family:Georgia;"><span style="font-size: 30px; ">SẢN PHẨM BÁN CHẠY</span></div>
-            </div>
-            <div class="row">
-                @if (!empty($hotProducts))
-                    @foreach ($hotProducts as $product)
-                        <?php $cat_id = DB::table('categories')->where('id', $product->category_id)->get();
-                        if($cat_id[0]->isDelete == 0){
-                            ?>
-                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                            <div class="card">
-                                <a href="{{ url('/product/'.$product->id)}}">
-                                    <img src="uploads/products/{{ $product->image }}" alt="Denim Jeans" style="width:100%">
-                                </a>
-                                <h5>{{ $product->name }}</h5>
-                                <p class="price">${{ $product->discounted_price }}</p>
-                                <p><a href="{{ url('/product/'.$product->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">Xem chi tiết</a></p>
+
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endfor
                             </div>
-                        </div>
-                        <?php } ?>
-                    @endforeach
-                @endif
+                        @endfor
+                    </div>
+                </div>
             </div>
-
-            <div style="text-align: center">{{ $hotProducts->links() }}</div>
-            <!-- end hot product -->
-
+        </div>
     </div>
-    </div>
+</section>
+<!-- Latest Product Section End -->
 
-    <!-- ----------------------hết sp -------------------------------->
+<!-- Blog Section Begin -->
+<section class="from-blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title from-blog__title">
+                    <h2>From The Blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <img src="front_assets/test/img/blog/blog-1.jpg" alt="">
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-comment-o"></i> 5</li>
+                        </ul>
+                        <h5><a href="#">Cooking tips make cooking simple</a></h5>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <img src="front_assets/test/img/blog/blog-2.jpg" alt="">
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-comment-o"></i> 5</li>
+                        </ul>
+                        <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item">
+                    <div class="blog__item__pic">
+                        <img src="front_assets/test/img/blog/blog-3.jpg" alt="">
+                    </div>
+                    <div class="blog__item__text">
+                        <ul>
+                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                            <li><i class="fa fa-comment-o"></i> 5</li>
+                        </ul>
+                        <h5><a href="#">Visit the clean farm in the US</a></h5>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+
+
 @endsection
 
 @section('script')
     <script>
-        if(window.location.pathname === '/')
-        {
-            $(".home").css("background-color", "#E7AB3C");
-            $(".about").css("background-color", "#222222");
-            $(".home_a").css("color", "#FFFFFF");
-            $(".category").css("background-color", "#222222");
-            $(".contact").css("background-color", "#222222");
-            $(".blog").css("background-color", "#222222");
-            $(".cart").css("background-color", "#222222");
-        }
+
+
+            function showProductByCate(idCate)
+            {
+                $.get("showProductByCate/" + idCate,function (data) {
+                    if(typeof(data) === "string")
+                    {
+                        data = JSON.parse(data)
+                    }
+
+                    var dt = '';
+                    var stl = '';
+                    var redirect = '';
+                    data.forEach(element => {
+                        stl = "background-image: url('uploads/products/" + element['image'] + "')";
+                        redirect = "/product/" + element['id'];
+                        dt +=
+                            '<div class="col-lg-3 col-md-4 col-sm-6 mix">' +
+                                '<div class="featured__item">' +
+                                    '<div class="featured__item__pic set-bg" style="' + stl + '">' +
+                                        '<ul class="featured__item__pic__hover">' +
+                                            '<li><a href="' + redirect + '"><i class="fa fa-shopping-cart"></i></a></li>' +
+                                        '</ul>' +
+                                    '</div>'+
+                                    '<div class="featured__item__text">' +
+                                        '<h6><a href="#">'+ element['name'] +'</a></h6>' +
+                                        '<h5>'+ element['discounted_price'] +' VND</h5>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                    });
+
+                    $(".showProduct").html(dt);
+                });
+            }
+
+
     </script>
+
+
+
 @endsection

@@ -24,3 +24,24 @@ tltn
 review đánh giá sao
 chia quyền nhân viên client admin user
 reactjs
+
+làm các chức năng trong hướng phát triển
+làm app để shipper tự động cập nhật trạng thái đơn hàng
+giải quyết vấn đề nhiều ng cùng mua 1 món hàng trong kho
+
+------------------------13/3/2021
+giao diện
+
+-----------------------20/2/2021
+elasticsearch
+navigate menu
+
+----------------------19/4/2021
+sửa cartcontroller: function cart and checkout
+
+
+
+
+
+
+

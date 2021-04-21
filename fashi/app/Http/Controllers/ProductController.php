@@ -9,6 +9,9 @@ use Image;// package intervention image
 use App\Product;
 use App\Category;
 use App\ProductsAttributes;
+use App\Rating;
+use App\User;
+use Auth;
 use View;
 
 
@@ -17,12 +20,11 @@ class ProductController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where(['isDelete' => 0, 'status' => 1])->get();
             View::share('categoriess',$categoriess);
         });
 
     }
-
     // Admin add product
     public function addProduct(Request $request)
     {
@@ -68,20 +70,12 @@ class ProductController extends Controller
 
 
         // category dropdown menu
-        // lấy tất cả các caterogy cha
-        $category = Category::where('isDelete', 0)->where(['parent_id' => 0])->get();
+        $category = Category::where('isDelete', 0)->where(['status' => 1])->get();
         $category_dropdown = "<option value='' selected disabled>Select</option>";
         foreach($category as $cat)
         {
             // đưa category cha vào option
             $category_dropdown .= "<option value='".$cat->id."'>".$cat->name."</option>";
-            //lấy các category con của 1 cha nào đó
-            $sub_category = Category::where('isDelete', 0)->where(['parent_id'=>$cat->id])->get();
-            foreach($sub_category as $sub_cat)
-            {
-                // đưa category con vào option
-                $category_dropdown .= "<option value='".$sub_cat->id."'>&nbsp;--&nbsp".$sub_cat->name."</option>";
-            }
         }
         return view('admin.products.add_product', compact('category_dropdown'));
     }
@@ -269,36 +263,6 @@ class ProductController extends Controller
         }
     }
 
-    // Product detail client
-    public function products($id=null)
-    {
-        $productDetails = Product::where('isDelete', 0)->with('attributes')->where('id',$id)->first();
-        $product = Product::where(['isDelete' => 0, 'id' => $id])->first();
-        $category_id = $product->category_id;
-        $relatedProducts = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $category_id])->limit(4)->get();
-
-        return view('fashi.product_details', compact('productDetails','relatedProducts'));
-    }
-
-    // Client search
-    public function timKiem(Request $request)
-    {
-
-        $this->validate($request,[
-            'tukhoa'=>'max:30',
-        ],[
-            'tukhoa.max'=>'Maximum of Your key is not over 30 characters',
-
-        ]);
-
-        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
-        // lay ra tat ca san pham cua 1 loai category
-
-        $tukhoa = $request->tukhoa;
-        $products = Product::where('isDelete', 0)->where('name','like',"%$tukhoa%")->paginate(4);
-        return view('fashi.products.timkiem', compact('tukhoa', 'products', 'categories'));
-    }
-
     //
     public function getStock(Request $request)
     {
@@ -335,5 +299,127 @@ class ProductController extends Controller
     {
         Product::where('id', $id)->update(['discounted_price' => $disPrice]);
         echo $disPrice;
+    }
+
+    // Elasticsearch
+    public function elasticSearch(Request $request)
+    {
+    	if($request->has('search')){
+    		$items = Product::searchByQuery(['match' => ['name' => $request->search]]);
+            // dd($items->getHits()["hits"]);
+    	}
+        $tukhoa = $request->search;
+        return view('fashi.products.timkiem',['products'=>$items->getHits()["hits"], 'tukhoa'=>$tukhoa]);
+    }
+
+    // Make index for elasticsearch
+    public function makeIndexData(Request $request){
+        Product::with('attributes')->chunk(20,function($products){
+            foreach($products as $key=> $product){
+                $product->addToIndex();
+            }
+        });
+        return response()->json("222",200);
+    }
+
+    // rating
+    public function rating($id, $star) {
+        // $idpro = (int)$id;
+        // $ratings = (int)$star;
+
+        // $rating = new Rating;
+        // $rating->user_id = 2;
+        // $rating->product_id = 11;
+        // $rating->rating = 2;
+        // $rating->save();
+        $flight = Rating::create([
+            'user_id' => 1,
+            'product_name' => 'test',
+            'rating' => 4
+        ]);
+        dd($flight);
+        echo Auth::user()->id;
+    }
+
+    // recommend products
+    function getRecommend(){
+        $products = Rating::all();
+        $matrix = array();
+        foreach($products as $product){
+            $username = User::where(['id' => $product->user_id])->get();
+            $matrix[$username[0]->name][$product->product_name] = $product->rating;
+        }
+
+        $res = self::getRecommendation($matrix, "Đức Trần Anh");
+        return $res;
+    }
+
+    function getSimilarity($matrix, $person1, $person2)
+    {
+        $similar = array();
+        $sum = 0;
+        foreach ($matrix[$person1] as $key => $value) {
+            if (array_key_exists($key, $matrix[$person2])) {
+                $similar[$key] = 1;
+            }
+        }
+        if($similar == 0)
+        return 0;
+
+        foreach ($matrix[$person1] as $key => $value) {
+            if(array_key_exists($key, $matrix[$person2]))
+            {
+                $sum = $sum + pow($value - $matrix[$person2][$key], 2);
+            }
+        }
+
+        return 1/(1+sqrt($sum));
+    }
+
+    function getRecommendation($matrix, $person)
+    {
+        $total = array();
+        $simsums = array();
+        $ranks = array();
+        foreach ($matrix as $otherPerson => $value) {
+            if ($otherPerson != $person) {
+                $sim = self::getSimilarity($matrix, $person, $otherPerson);
+
+                // "Độ gần giống : " . $otherPerson . " với " . $user . " là : " . $sim . "<br/>";
+                // if ($sim == -1) continue;
+                foreach ($matrix[$otherPerson] as $key => $value) {
+                    if (!array_key_exists($key, $matrix[$person])) {
+                        if (!array_key_exists($key, $total)) {
+                            $total[$key] = 0;
+                        }
+                        $total[$key] += $matrix[$otherPerson][$key] * $sim;
+
+                        if (!array_key_exists($key, $simsums)) {
+                            $simsums[$key] = 0;
+                        }
+                        $simsums[$key] += $sim;
+                    }
+                }
+            }
+        }
+
+        foreach ($total as $key => $value) {
+            $ranks[$key] = $value / $simsums[$key];
+
+        }
+        array_multisort($ranks, SORT_DESC);
+        return $ranks;
+
+    }
+
+    // Product detail client
+    public function products($id=null)
+    {
+        $productDetails = Product::where('isDelete', 0)->with('attributes')->where('id',$id)->first();
+        $product = Product::where(['isDelete' => 0, 'id' => $id])->first();
+        $category_id = $product->category_id;
+        $relatedProducts = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $category_id])->limit(4)->get();
+        $res = self::getRecommend();
+        return view('fashi.product_details', compact('productDetails','relatedProducts', 'res'));
     }
 }

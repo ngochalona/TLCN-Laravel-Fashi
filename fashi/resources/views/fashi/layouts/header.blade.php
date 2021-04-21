@@ -1,105 +1,89 @@
-<div class="container-fuild">
+ <!-- Page Preloder -->
+ <div id="preloder">
+    <div class="loader"></div>
+</div>
 
-    <!---------------------------- start menu----------------------- -->
+<!-- Humberger Begin -->
+<div class="humberger__menu__overlay"></div>
+<div class="humberger__menu__wrapper">
+    <div class="humberger__menu__logo">
+        <a href="{{ url('/')}}"><img src="front_assets/test/images/logo.png" alt=""></a>
+    </div>
+    <div class="humberger__menu__cart">
+        <ul>
+            @if (empty(Auth::check()))
+                <li style="margin-bottom: 10px"><a href="{{ url('/userLogin')}}"><i class="fa fa-user"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Đăng nhập</span></a></li>
+                <li><a href="{{ url('/userRegister')}}"><i class="fa fa-user-plus"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Đăng ký</span></a></li>
+            @else
+                <li style="margin-bottom: 10px"><a href="{{ url('/account')}}"><i class="fa fa-user"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Tài khoản</span></a></li>
+                <li><a href="{{ url('/userLogout')}}"><i class="fa fa-lock"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Đăng xuất</span></a></li>
+            @endif
+        </ul>
+    </div>
+
+    <nav class="humberger__menu__nav mobile-menu">
+        <ul>
+            <li class="active"><a href="{{ url('/')}}">Trang chủ</a></li>
+            <li><a href="{{ url('/about')}}">Về chúng tôi</a></li>
+            <li><a href="#">Loại sản phẩm</a>
+                <ul class="header__menu__dropdown">
+                    @foreach ($categoriess as $category)
+                        @if ($category->status == 1)
+                            <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
+                        @endif
+                    @endforeach
+                </ul>
+            </li>
+            <li><a href="{{ url('/blog')}}">Blog</a></li>
+            <li><a href="{{ url('/contact')}}">Liên hệ</a></li>
+            <li><a href="{{ url('/cart')}}">Giỏ</a></li>
+
+        </ul>
+    </nav>
+    <div id="mobile-menu-wrap"></div>
+
+</div>
+<!-- Humberger End -->
+
+<!-- Header Section Begin -->
+<header class="header">
     <div class="container">
-        <nav class="navbar navbar-default menu ">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ url('/')}}"><img src="front_assets/images/logo.png"></a>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="{{ url('/')}}"><img src="front_assets/test/images/logo.png" alt=""></a>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                    <ul class="nav navbar-nav navbar-right ">
-                        <li>
-                            <form class="navbar-form" action="{{ url('/timkiem')}}" method="post"> {{csrf_field()}}
-                                <div class="form-group">
-                                    <input name="tukhoa" type="text" class="form-control" placeholder="Nhập từ khóa sản phẩm ">
-                                </div>
-                                <button type="submit" class="btn btn-default btnSearch">Tìm kiếm</button>
-                            </form>
-                        </li>
-
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a class="home" href="{{ url('/')}}">Trang chủ</a></li>
+                        <li><a class="about" href="{{ url('/about')}}">Chúng tôi</a></li>
+                        <li><a class="blog" href="{{ url('/blog')}}">Blog</a></li>
+                        <li><a class="contact" href="{{ url('/contact')}}">Liên hệ</a></li>
+                        <li><a href="{{ url('/cart')}}">Giỏ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    <ul>
                         @if (empty(Auth::check()))
-                            <li><a href="{{ url('/userLogin')}}"><i class="fas fa-user" style="margin-right: 8px;"></i>Đăng nhập</a></li>
-                            <li><a href="{{ url('/userRegister')}}"><i class="fas fa-user-plus"  style="margin-right: 10px;"></i>Đăng ký</a></li>
+                            <li><a href="{{ url('/userLogin')}}"><i class="fa fa-user"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Đăng nhập</span></a></li>
+                            <li><a href="{{ url('/userRegister')}}"><i class="fa fa-user-plus"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Đăng ký</span></a></li>
                         @else
-                            <li><a href="{{ url('/account')}}"><i class="fas fa-user"  style="margin-right: 10px;"></i>Tài khoản</a></li>
-                            <li><a href="{{ url('/userLogout')}}"><i class="fas fa-lock"  style="margin-right: 10px;"></i>Đăng xuất</a></li>
+                            <li><a href="{{ url('/account')}}"><i class="fa fa-user"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Tài khoản</span></a></li>
+                            <li><a href="{{ url('/userLogout')}}"><i class="fa fa-lock"></i> <span style="color: #000; margin-left: 5px; font-size: medium;">Đăng xuất</span></a></li>
                         @endif
                     </ul>
                 </div>
-                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.container-fluid -->
-        </nav>
-    </div>
-
-    <nav class="navbar navbar-inverse menu1 fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <ul class="nav navbar-nav myDIV">
-                    <li class=" menu_item home"><a class="home_a" href="{{ url('/')}}">Trang chủ </a></li>
-                    <li class="menu_item about"><a class="about_a" href="{{ url('/about')}}">Về chúng tôi</a></li>
-                    <li class="dropdown menu_item category">
-                        <a class="category_a" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sản phẩm<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            @foreach ($categoriess as $category)
-                                @if ($category->status == 1)
-                                    <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    </li>
-                    <li class="menu_item blog"><a class="blog_a" href="{{ url('/blog')}}">Blog</a></li>
-                    <li class="menu_item contact"><a class="contact_a" href="{{ url('/contact')}}">Liên hệ</a></li>
-
-                </ul>
-
-
-                <ul class="nav navbar-nav">
-                    <li class="menu_item cart" >
-                        <a class="cart_a"  href="{{ url('/cart')}}"> <span class="glyphicon glyphicon-shopping-cart" style="margin-right: 10px"></span>Giỏ hàng<span></span></a>
-
-                    </li>
-
-                </ul>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
         </div>
-    </nav>
-
-
-    <!---------------------------- end menu----------------------- -->
-
-</div>
-
-
-
-
-
-
-
-
-
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->
 
 

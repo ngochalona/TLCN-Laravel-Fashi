@@ -1,22 +1,69 @@
 @extends('fashi.layouts.master')
 
 @section('content')
-     <!-- Breadcrumb Section Begin -->
-     <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="{{url('/')}}"><i class="fa fa-home"></i> Home</a>
-                        <a href="{{url('/cart')}}">Cart</a>
-                        <span>CheckOut</span>
+    <!-- Hero Section Begin -->
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Loại Sản Phẩm</span>
+                    </div>
+
+                    <ul>
+                        @foreach ($categoriess as $category)
+                            @if ($category->status == 1)
+                                <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="{{ url('/elasticSearch')}}" method="get"> {{csrf_field()}}
+                            <input type="text" name="search" placeholder="Bạn cần kiếm đồ?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0966060152</h5>
+                            <span>hỗ trợ 24/7</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb Section Begin -->
+</section>
+<!-- Hero Section End -->
 
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="front_assets/test/images/5.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text" >
+                    <h2 style="font-family: 'Roboto Slab', serif; letter-spacing: 2px;">Checkout</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ url('/')}}">Trang chủ</a>
+                        <a href="{{ url('/cart')}}">Giỏ hàng</a>
+                        <span>Checkout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
 
     <div class="container">
         @if (Session::has('flash_message_error'))
@@ -49,127 +96,110 @@
     </div>
 
 
-    <!-- Shopping Cart Section Begin -->
-    <section class="checkout-section spad">
-        <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="{{url('/checkout')}}" style="text-decoration: none;" class="content-btn">SẢN PHẨM ĐẶT HÀNG</a>
-                        </div>
+
+        <!-- Checkout Section Begin -->
+        <section class="checkout spad">
+            <div class="container">
+                <div class="checkout__form">
+                    <h4>Chi tiết đơn hàng</h4>
+                    <form action="{{url('/checkout')}}" method="post" class="checkout-form"> {{csrf_field()}}
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="cart-table">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Ảnh</th>
-                                                <th class="p-name" style="text-align: center;">Tên</th>
-                                                <th>Giá</th>
-                                                <th>Số lượng</th>
-                                                <th>Tổng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <?php $total_amount = 0;  ?>
-                                        @foreach ($userCart as $cartitem)
-
-
-                                            <tr>
-                                                <td class="cart-pic first-row"><img style="width: 80px; height: 80px;  border-radius: 5%;" src="uploads/products/{{$cartitem->image}}" alt=""></td>
-                                                <td class="cart-title first-row" style="text-align: center;">
-                                                    <h5 class="product-name">{{$cartitem->product_name}}</h5>
-                                                </td>
-                                                <td class="p-price first-row">${{$cartitem->price}}</td>
-                                                <td class="cart-title first-row">
-                                                    <h5 class="product-name" style="text-align: center;">{{$cartitem->quantity}}</h5>
-                                                </td>
-                                                <td class="total-price first-row">${{$cartitem->price * $cartitem->quantity}}</td>
-                                            </tr>
-
-                                            <?php  $total_amount += ($cartitem->price * $cartitem->quantity);  ?>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="proceed-checkout">
-                                            <ul>
-                                                <li class="cart-total" style="text-align: center; font-size: 18px">Thanh toán</li>
-                                                <li class="subtotal" style="margin-top: 15px;">Tạm tính <span>{{$total_amount}} VND</span></li>
-                                                <li class="subtotal" style="margin-top: 15px;">Phí vận chuyển <span>0 VND</span></li>
-                                                <li class="subtotal" style="margin-top: 15px;">Giảm giá
-                                                    <span>
-                                                        @if (!empty(Session::get('CouponAmount')))
-                                                            {{Session::get('CouponAmount') }} VND
-                                                        @else
-                                                            0 VND
-                                                        @endif
-                                                    </span>
-
-                                                </li>
-                                                <li class="cart-total" >Thành tiền <span>{{ $grand_total = $total_amount - Session::get('CouponAmount') }} VND</span></li>
-                                            </ul>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="{{url('/checkout')}}" style="text-decoration: none;" class="content-btn">THÔNG TIN GIAO HÀNG</a>
-                        </div>
-                        <form action="{{url('/checkout')}}" method="post" class="checkout-form"> {{csrf_field()}}
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <label for="fir">Họ và tên<span>*</span></label>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="checkout__input">
+                                    <p>Họ và tên<span>*</span></p>
                                     <input type="text" name="billing_name" id="billing_name" value="{{$userDetails->name}}">
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="last">Địa chỉ<span>*</span></label>
+                                <div class="checkout__input">
+                                    <p>Địa chỉ<span>*</span></p>
                                     <input type="text"  name="billing_address" id="billing_address" value="{{$userDetails->address}}">
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="cun-name">Tỉnh / Thành<span>*</span></label>
+                                <div class="checkout__input">
+                                    <p>Tỉnh / Thành<span>*</span></p>
                                     <input type="text"  name="billing_city" id="billing_city" value="{{$userDetails->city}}">
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="cun">Quận / Huyện<span>*</span></label>
+                                <div class="checkout__input">
+                                    <p>Quận / Huyện<span>*</span></p>
                                     <input type="text" name="billing_state" id="billing_state" value="{{$userDetails->state}}">
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="cun">Phường / Xã<span>*</span></label>
+                                <div class="checkout__input">
+                                    <p>Phường / Xã<span>*</span></p>
                                     <input type="text" name="billing_ward" id="billing_ward" value="{{$userDetails->ward}}">
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="town">Số điện thoại<span>*</span></label>
+                                <div class="checkout__input">
+                                    <p>Số điện thoại<span>*</span></p>
                                     <input type="text" name="billing_mobile" id="billing_mobile" value="{{$userDetails->mobile}}">
                                 </div>
-
-                                <div class="col-lg-12">
-                                    <input type="hidden" value="{{$grand_total}}" name="grand_total">
-                                    <label for="town">Phương thức thanh toán</label>
-                                    <div class="radio">
-                                        <label style="font-size: 16px"><input class="payment" id="credit" type="radio" value="cod" name="payment_method" class="cod" checked>Cash On Delivery</label>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="checkout__order">
+                                    <h4>Đơn hàng</h4>
+                                    <div class="shoping__cart__table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="shoping__product">Sản phẩm</th>
+                                                    <th>Size</th>
+                                                    <th>Tổng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $total_amount = 0;  ?>
+                                            @foreach ($userCart as $cartitem)
+                                                <tr>
+                                                    <td class="shoping__cart__item">
+                                                        <img src="uploads/products/{{$cartitem->image}}" style="width: 100px; height: 100px;  border-radius: 5%;" alt="">
+                                                        <h5>{{$cartitem->product_name}}</h5>
+                                                    </td>
+                                                    <td class="shoping__cart__price">
+                                                        {{$cartitem->size}}
+                                                    </td>
+                                                    <td class="shoping__cart__total">
+                                                        {{$cartitem->price * $cartitem->quantity}}  VND
+                                                    </td>
+                                                </tr>
+                                                <?php  $total_amount += ($cartitem->price *
+                                                $cartitem->quantity); ?>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="radio">
-                                        <label style="font-size: 16px"><input class="payment" id="debit" type="radio" name="payment_method" value="stripe" class="stripe">Stripe</label>
+                                    <div class="checkout__order__subtotal">Tạm tính <span>{{$total_amount}} VND</span></div>
+                                    <div class="checkout__order__total">Giảm giá
+                                        <span style="color: #000">
+                                        @if (!empty(Session::get('CouponAmount')))
+                                        {{Session::get('CouponAmount') }} VND @else 0 VND @endif
+                                      </span>
                                     </div>
-                                    <div class="order-btn">
-                                        <button style="width: 300px; margin-top:20px;" type="submit" class="site-btn login-btn dangnhap" onclick="return selectPaymentMethod();">ĐẶT HÀNG</button>
+                                    <div class="checkout__order__total">Thành tiền
+                                        <span>
+                                            {{ $grand_total = $total_amount - Session::get('CouponAmount') }} VND
+                                        </span>
                                     </div>
+                                    <div class="checkout__input">
+                                        <input type="hidden" @if (empty($grand_total))
+                                            value=0
+                                        @else
+                                            value="{{$grand_total}}"
+                                        @endif  name="grand_total">
+                                        <label for="town">Phương thức thanh toán</label>
+                                        <div class="radio">
+                                            <label style="font-size: 16px"><input style="height: 20px; width: 50px;" class="payment" id="credit" type="radio" value="cod" name="payment_method" class="cod" checked>Cash On Delivery</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label style="font-size: 16px"><input style="height: 20px; width: 50px;" class="payment" id="debit" type="radio" name="payment_method" value="stripe" class="stripe">Stripe</label>
+                                        </div>
+                                    </div>
+                                    <button style="width: 300px; margin-top:20px;" type="submit" class="site-btn" onclick="return selectPaymentMethod();">ĐẶT HÀNG</button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </section>
+        <!-- Checkout Section End -->
 
-        </div>
-    </section>
-    <!-- Shopping Cart Section End -->
+
+
+
 @endsection

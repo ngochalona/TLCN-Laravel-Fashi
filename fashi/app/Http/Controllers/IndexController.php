@@ -14,7 +14,7 @@ class IndexController extends Controller
     function __construct()
     {
         View::composer(['*'], function ($view) {
-            $categoriess = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
+            $categoriess = Category::where(['isDelete' => 0, 'status' => 1])->get();
             View::share('categoriess',$categoriess);
         });
 
@@ -23,48 +23,31 @@ class IndexController extends Controller
     public function index()
     {
         $banners = Banners::where('isDelete', 0)->where('status',1)->get();
-        $countBanners = Banners::where('isDelete', 0)->where('status',1)->count();
+        $newProducts = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->get();
+        $countNew = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->count();
+        $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->get();
+        $countHot = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->count();
+        $products = Product::where('isDelete', 0)->where(['status' => 1])->get();
 
-        $newProducts = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->paginate(4);
-        $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->paginate(4);
-
-        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
-
-        return view('fashi.index',compact('banners','newProducts','hotProducts','countBanners','categories'));
-    }
-
-    public function subcategories($id=null)
-    {
-        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
-        // lay ra tat ca san pham cua 1 loai category
-        $products = Product::where('isDelete', 0)->where(['status'=>1,'category_id' => $id])->get();
-        $category_name = Category::where(['id' => $id])->first();
-
-        return view('fashi.subcategory',compact('products', 'categories', 'category_name'));
+        return view('fashi.index',compact('banners','newProducts','hotProducts', 'products','countNew','countHot'));
     }
 
     public function categories($id=null)
     {
-        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
-        // lay ra tat ca san pham cua 1 loai category
-
-        $subcats = Category::where('isDelete', 0)->where(['status'=>1,'parent_id' => $id])->get();
-
+        $products = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $id])->paginate(6);
         $category_name = Category::where(['id' => $id])->first();
-        return view('fashi.category',compact('categories', 'subcats', 'category_name'));
+        return view('fashi.category',compact('products', 'category_name'));
     }
     public function home()
     {
         $banners = Banners::where('isDelete', 0)->where('status',1)->get();
-        $countBanners = Banners::where('isDelete', 0)->where('status',1)->count();
+        $newProducts = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->get();
+        $countNew = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->count();
+        $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->get();
+        $countHot = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->count();
+        $products = Product::where('isDelete', 0)->where(['status' => 1])->get();
 
-        $newProducts = Product::where('isDelete', 0)->where(['status' => 1, 'new' => 1])->paginate(4);
-        $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->paginate(4);
-
-        $categories = Category::where('isDelete', 0)->with('categories')->where(['parent_id'=>0])->get();
-
-
-        return view('fashi.index',compact('banners','newProducts','hotProducts','countBanners','categories'));
+        return view('fashi.index',compact('banners','newProducts','hotProducts', 'products','countNew','countHot'));
     }
 
     public function contact()
@@ -77,6 +60,11 @@ class IndexController extends Controller
         return view('fashi.about');
     }
 
-
+    // ajax show product
+    public function showProductByCate($id)
+    {
+        $products = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $id])->get();
+        echo $products;
+    }
 
 }

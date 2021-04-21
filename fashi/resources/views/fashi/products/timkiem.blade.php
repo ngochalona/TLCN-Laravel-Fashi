@@ -3,101 +3,114 @@
 @section('content')
 
 
-    <!----------------------------start sidebar----------------------- -->
 
-    <div class="below-content">
-        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-            @foreach ($categories as $category)
-            @if ($category->status == 1)
-                <div class="panel-group" id="accordion">
-                    <div class="panel panel-warning" style="margin-bottom: -15px">
-                    <div class="panel-heading"  style="background-color: #E7AB3C !important; color: #000000">
-                        <h4 class="panel-title">
-                        <a style="text-decoration: none;font-family:Georgia; font-weight: bold" data-toggle="collapse" data-parent="#accordion" href="#{{$category->url}}">
-                        {{ $category->name}}</a>
-                        </h4>
+<!-- Hero Section Begin -->
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Loại Sản Phẩm</span>
                     </div>
-                    <div id="{{$category->url}}" class="panel-collapse collapse in" >
-                        <ul class="list-group">
-                            @foreach ($category->categories as $subcat)
-                                @if ($subcat->status == 1 && $subcat->isDelete == 0)
-                                <li  style="background-color: #FCF8E3 !important;" class="list-group-item">
-                                    <a href="{{ url('/subcategories/'. $subcat->id)}}" style="color: #000000; text-decoration:none;font-family:Georgia">{{$subcat->name}}</a>
-                                </li>
-                            @endif
 
+                    <ul>
+                        @foreach ($categoriess as $category)
+                            @if ($category->status == 1)
+                                <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="{{ url('/elasticSearch')}}" method="get"> {{csrf_field()}}
+                            <input type="text" name="search" placeholder="Bạn cần kiếm đồ?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0966060152</h5>
+                            <span>hỗ trợ 24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="front_assets/test/images/5.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text" >
+                    <h2 style="font-family: 'Roboto Slab', serif; letter-spacing: 2px;">Tìm kiếm trong cửa hàng</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{{ url('/')}}">Trang chủ</a>
+                        <span>Sản phẩm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Loại sản phẩm</h4>
+                        <ul>
+                            @foreach ($categoriess as $category)
+                                @if ($category->status == 1)
+                                    <li><a href="{{ url('/categories/'. $category->id)}}">{{$category->name}}</a></li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
-                    </div>
-
                 </div>
-            @endif
-
-            @endforeach
-
-
-              <div class="card card-price">
-                <div class="card-img">
-                  <a href="#">
-                    <img src="front_assets/images/women-large.jpg" class="img-responsive">
-                    <div class="card-caption">
-                      <span class="h2 text-center">Big Item</span>
-                      <p>100% silk</p>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="product__discount">
+                    <div class="section-title product__discount__title">
+                        <h2>Kết quả tìm kiếm từ khóa: {{ $tukhoa }}</h2>
                     </div>
-                  </a>
                 </div>
-
-              </div>
+                <div class="row">
+                    @foreach ($products as $product)
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="uploads/products/{{ $product["_source"]["image"] }}">
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="{{ url('/product/'.$product["_id"])}}"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="{{ url('/product/'.$product["_id"])}}">{{$product["_source"]["name"]}}</a></h6>
+                                <h5>{{$product["_source"]["discounted_price"]}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
-
-
-<!----------------------------end sidebar----------------------- -->
-
-
-        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
-            <div class="row">
-                <div class="well text-center" style="background-color: #E7AB3C;font-family:Georgia"><span style="font-size: 30px; ">Your key "{{ $tukhoa}}"</span></div>
-            </div>
-            <div class="row">
-
-                                @foreach ($products as $product)
-                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                                        <div class="card">
-                                            <a href="{{ url('/product/'.$product->id)}}">
-                                                <img src="uploads/products/{{ $product->image }}" alt="Denim Jeans" style="width:100%">
-                                            </a>
-                                            <h5>{{ $product->name }}</h5>
-                                            <p class="price">${{ $product->price }}</p>
-                                            <p><a href="{{ url('/product/'.$product->id)}}" class="ViewDetail" style="width:100%;background-color:#E7AB3C;display:inline-block;cursor:pointer;color:#000000;font-family:Georgia;font-size:18px;font-weight:bold;font-style:italic;padding:11px 48px;text-decoration:none;">View Detail</a></p>
-                                        </div>
-                                    </div>
-                                @endforeach
-
-
-            </div>
-            <!--end new product -->
-            <!-- start hình -->
-            <div class="row" style="margin-top: 70px; margin-bottom: 70px;">
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <img src="front_assets/images/banner-1.jpg" class="img-rounded" alt="Cinque Terre"  width="304" height="200">
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <img src="front_assets/images/banner-2.jpg" class="img-rounded" alt="Cinque Terre"  width="304" height="200">
-                    </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <img src="front_assets/images/banner-3.jpg" class="img-rounded" alt="Cinque Terre"  width="304" height="200">
-                    </div>
-
-            </div>
-            <!-- end hình -->
-
-
     </div>
-
-
-    </div>
-
-
-</div>
+</section>
+<!-- Product Section End -->
 @endsection

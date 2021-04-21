@@ -35,7 +35,7 @@ class AdminController extends Controller
 
     public function dashboard(){
 
-        $countUser = User::where('admin', 0)->count();
+        $countUser = User::count();
         $aveunes = Bill::get();
         $totalAveune = 0;
         foreach ($aveunes as $key => $value) {
