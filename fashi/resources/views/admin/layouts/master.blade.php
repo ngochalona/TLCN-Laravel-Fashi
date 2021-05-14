@@ -11,12 +11,6 @@
       <meta name="csrf-token" content="{{csrf_token()}}">
       <title>CRM Admin Panel</title>
 
-
-
-
-
-
-
       <!-- Favicon and touch icons -->
       <link rel="shortcut icon" href="admin_assets/dist/img/ico/favicon.png" type="image/x-icon">
       <!-- Start Global Mandatory Style
@@ -129,33 +123,6 @@
             $('#table_id').DataTable({
                 "paging": false,
             });
-
-            //add remove fields dynamically
-            $(document).ready(function(){
-                var maxField = 10; //Input fields increment limitation
-                var addButton = $('.add_button'); //Add button selector
-                var wrapper = $('.field_wrapper'); //Input field wrapper
-                var fieldHTML = '<div style="display:flex; margin-bottom: 5px;"><input type="text" name="sku[]" style="width:200px; margin-right:5px" id="sku" placeholder="SKU" class="form-control" value=""/><input type="text" name="size[]" style="width:200px; margin-right:5px" id="size" placeholder="SIZE" class="form-control" value=""/><input type="text" name="stock[]" style="width:200px; margin-right:5px" id="stock" placeholder="STOCK" class="form-control" value=""/><a href="javascript:void(0);" class="remove_button">Remove</a></div>'; //New input field html
-                var x = 1; //Initial field counter is 1
-
-                //Once add button is clicked
-                $(addButton).click(function(){
-                    //Check maximum number of input fields
-                    if(x < maxField){
-                        x++; //Increment field counter
-                        $(wrapper).append(fieldHTML); //Add field html
-                    }
-                });
-
-                //Once remove button is clicked
-                $(wrapper).on('click', '.remove_button', function(e){
-                    e.preventDefault();
-                    $(this).parent('div').remove(); //Remove field html
-                    x--; //Decrement field counter
-                });
-            });
-
-
         } );
       </script>
 

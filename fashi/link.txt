@@ -39,6 +39,15 @@ navigate menu
 ----------------------19/4/2021
 sửa cartcontroller: function cart and checkout
 
+---------------------2/5/2021
+thêm nhập hàng
+chinh ui gợi ý sp
+thêm blog ở index
+
+-------------8/5/2021
+nhaapj hang excel
+thêm sp bán chạy nhất ở index và product details khi chưa login
+
 
 
 

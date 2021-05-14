@@ -96,11 +96,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h2>Featured Product</h2>
+                    <h2>Tất Cả Sản Phẩm </h2>
                 </div>
                 <div class="featured__controls">
                     <ul>
-                        <li class="active" data-filter="*">All</li>
+                        <li class="active" onclick="showProductByCate(0)" data-filter="*">All</li>
                         @foreach ($categoriess as $category)
                             @if ($category->status == 1)
                                 <li onclick="showProductByCate({{$category->id}})">{{$category->name}}</li>
@@ -120,8 +120,8 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">{{ $product->name }} VND</a></h6>
-                            <h5>{{ $product->discounted_price }}</h5>
+                            <h6><a href="{{ url('/product/'.$product->id)}}">{{ $product->name }}</a></h6>
+                            <h5>{{ $product->discounted_price }} VND</h5>
                         </div>
                     </div>
                 </div>
@@ -150,6 +150,29 @@
 </div>
 <!-- Banner End -->
 
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>Sản Phẩm Bán Chạy</h2>
+                </div>
+            </div>
+        </div>
+        <div class="categories__slider owl-carousel">
+            @foreach ($best_seller as $product)
+                <div class="col-lg-3">
+                    <div class="categories__item set-bg" data-setbg="uploads/products/{{ $product->image }}">
+                        <h5><a href="{{ url('/product/'.$product->id)}}">{{$product->name}}</a></h5>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+{{-- end sản phẩm bán chạy --}}
+
+
 <!-- Latest Product Section Begin -->
 <section class="latest-product spad">
     <div class="container">
@@ -170,16 +193,13 @@
                             <div class="latest-prdouct__slider__item">
                                 @for ($j; $j <= $i * 3; $j++)
                                     @if (isset($newProducts[$j-1]))
-                                        <a href="#" class="latest-product__item">
+                                        <a href="{{ url('/product/'.$newProducts[$j-1]->id)}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
                                                 <img style="width: 150px; height: 150px; border-radius: 10%" src="uploads/products/{{ $newProducts[$j-1]->image }}" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-
                                                     <h6>{{$newProducts[$j-1]->name}}</h6>
                                                     <span>{{ $newProducts[$j-1]->discounted_price }}</span><span style="color: grey; text-decoration: line-through; font-weight: normal; ">{{ $newProducts[$j-1]->price }}</span>
-
-
                                             </div>
                                         </a>
                                     @endif
@@ -205,16 +225,13 @@
                             <div class="latest-prdouct__slider__item">
                                 @for ($j; $j <= $i * 3; $j++)
                                     @if (isset($hotProducts[$j-1]))
-                                        <a href="#" class="latest-product__item">
+                                        <a href="{{ url('/product/'.$hotProducts[$j-1]->id)}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
                                                 <img style="width: 150px; height: 150px; border-radius: 10%" src="uploads/products/{{ $hotProducts[$j-1]->image }}" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-
                                                     <h6>{{$hotProducts[$j-1]->name}}</h6>
                                                     <span>{{ $hotProducts[$j-1]->discounted_price }}</span><span style="color: grey; text-decoration: line-through; font-weight: normal; ">{{ $hotProducts[$j-1]->price }}</span>
-
-
                                             </div>
                                         </a>
                                     @endif
@@ -235,56 +252,24 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title from-blog__title">
-                    <h2>From The Blog</h2>
+                    <h2>Blog Chia Sẻ</h2>
                 </div>
             </div>
         </div>
         <div class="row">
+            @foreach ($blog as $bl)
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="blog__item">
                     <div class="blog__item__pic">
-                        <img src="front_assets/test/img/blog/blog-1.jpg" alt="">
+                        <img src="uploads/blogs/{{$bl->image}}" alt="" style="width: 360px;height: 240px;border-radius: 5%;">
                     </div>
                     <div class="blog__item__text">
-                        <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                            <li><i class="fa fa-comment-o"></i> 5</li>
-                        </ul>
-                        <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                        <h5><a href="{{url('blog')}}">{{$bl->title}}</a></h5>
+                        <p><?php echo substr($bl->content, 0, 100) . '...';  ?> </p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic">
-                        <img src="front_assets/test/img/blog/blog-2.jpg" alt="">
-                    </div>
-                    <div class="blog__item__text">
-                        <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                            <li><i class="fa fa-comment-o"></i> 5</li>
-                        </ul>
-                        <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic">
-                        <img src="front_assets/test/img/blog/blog-3.jpg" alt="">
-                    </div>
-                    <div class="blog__item__text">
-                        <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                            <li><i class="fa fa-comment-o"></i> 5</li>
-                        </ul>
-                        <h5><a href="#">Visit the clean farm in the US</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -320,7 +305,7 @@
                                         '</ul>' +
                                     '</div>'+
                                     '<div class="featured__item__text">' +
-                                        '<h6><a href="#">'+ element['name'] +'</a></h6>' +
+                                        '<h6><a href="'+ redirect +'">'+ element['name'] +'</a></h6>' +
                                         '<h5>'+ element['discounted_price'] +' VND</h5>' +
                                     '</div>' +
                                 '</div>' +

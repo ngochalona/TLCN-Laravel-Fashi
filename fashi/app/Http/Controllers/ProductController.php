@@ -11,8 +11,15 @@ use App\Category;
 use App\ProductsAttributes;
 use App\Rating;
 use App\User;
+use App\BillsDetails;
+use App\Import;
+use App\ImportDetails;
+use App\Imports\ProductsImportFile;
+use Maatwebsite\Excel\Facades\Excel;
+use DB;
 use Auth;
 use View;
+
 
 
 class ProductController extends Controller
@@ -305,7 +312,7 @@ class ProductController extends Controller
     public function elasticSearch(Request $request)
     {
     	if($request->has('search')){
-    		$items = Product::searchByQuery(['match' => ['name' => $request->search]]);
+    		$items = Product::searchByQuery(['match' => ['description' => $request->search]]);
             // dd($items->getHits()["hits"]);
     	}
         $tukhoa = $request->search;
@@ -323,22 +330,18 @@ class ProductController extends Controller
     }
 
     // rating
-    public function rating($id, $star) {
-        // $idpro = (int)$id;
-        // $ratings = (int)$star;
-
-        // $rating = new Rating;
-        // $rating->user_id = 2;
-        // $rating->product_id = 11;
-        // $rating->rating = 2;
-        // $rating->save();
-        $flight = Rating::create([
-            'user_id' => 1,
-            'product_name' => 'test',
-            'rating' => 4
-        ]);
-        dd($flight);
-        echo Auth::user()->id;
+    public function rating($name, $star) {
+        $user_id = Auth::user()->id;
+        $exist = Rating::where(['user_id' => $user_id, 'product_name' => $name])->first();
+        if(!isset($exist)){
+            Rating::create([
+                'user_id' => $user_id,
+                'product_name' => $name,
+                'rating' => (int)$star
+            ]);
+        } else{
+            Rating::where(['user_id' => $user_id, 'product_name' => $name])->update(['rating'=>$star]);
+        }
     }
 
     // recommend products
@@ -350,7 +353,7 @@ class ProductController extends Controller
             $matrix[$username[0]->name][$product->product_name] = $product->rating;
         }
 
-        $res = self::getRecommendation($matrix, "Đức Trần Anh");
+        $res = self::getRecommendation($matrix, Auth::user()->name);
         return $res;
     }
 
@@ -364,7 +367,7 @@ class ProductController extends Controller
             }
         }
         if($similar == 0)
-        return 0;
+            return 0;
 
         foreach ($matrix[$person1] as $key => $value) {
             if(array_key_exists($key, $matrix[$person2]))
@@ -415,11 +418,136 @@ class ProductController extends Controller
     // Product detail client
     public function products($id=null)
     {
+        $res = [];
         $productDetails = Product::where('isDelete', 0)->with('attributes')->where('id',$id)->first();
-        $product = Product::where(['isDelete' => 0, 'id' => $id])->first();
-        $category_id = $product->category_id;
+        $category_id = $productDetails->category_id;
         $relatedProducts = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $category_id])->limit(4)->get();
-        $res = self::getRecommend();
-        return view('fashi.product_details', compact('productDetails','relatedProducts', 'res'));
+        if(Auth::check()){
+            $res = self::getRecommend();
+        }
+        $rating = DB::table('ratings')
+        ->where('product_name', $productDetails->name)
+        ->avg('rating');
+        // $arr = array();
+        // foreach($res as $key => $value){
+        //     array_push($arr, $key);
+        // }
+        // $pros = DB::table('products')
+        //           ->whereIn('name', $arr)
+        //           ->get();
+        //           dd($pros);
+        $best_seller = BillsDetails::query()->join('products', 'bills_details.product_id', '=', 'products.id')
+                    ->select('bills_details.product_id', 'products.image', 'products.name', 'products.id')
+                    ->selectRaw('count(bills_details.bill_id) as product_number')
+                    ->groupBy('bills_details.product_id', 'products.image', 'products.name', 'products.id')
+                    ->orderBy('product_number', 'desc')
+                    ->get();
+        return view('fashi.product_details', compact('productDetails','relatedProducts', 'res', 'rating', 'best_seller'));
+    }
+
+
+    // Show Nhap hang
+    public function import(){
+        $import = Import::all();
+        return view('admin.products.show_imports', compact('import'));
+    }
+
+    // Chi tiết nhập hàng
+    public function importDetail($id)
+    {
+        $details = ImportDetails::where(['import_id' => $id])->get();
+        return view('admin.products.chitietnhaphang', compact('details','id'));
+    }
+
+    // Nhap hang
+    public function nhapHang(Request $request){
+        if($request->isMethod('post'))
+        {
+            $data = $request->all();
+            $sl = 0;
+            foreach($data['sanpham'] as $key => $val){
+                $sl += $data['soluong'][$key];
+            }
+            if(!empty($val))
+            {
+                $import = new Import;
+                $import->total_qty = $sl;
+                $import->save();
+
+                $import_id = DB::getPdo()->lastinsertID();
+                foreach($data['sanpham'] as $key => $val){
+                    $importd = new ImportDetails;
+                    $importd->import_id = $import_id;
+                    $importd->product_id = $data['sanpham'][$key];
+                    $importd->size = $data['size'][$key];
+                    $importd->quantity = $data['soluong'][$key];
+                    $importd->save();
+
+                    $stock = DB::table('products_attributes')->where(['product_id'=>$data['sanpham'][$key], 'size' => $data['size'][$key]])->select('stock')->first();
+                    ProductsAttributes::where(['product_id'=>$data['sanpham'][$key], 'size' => $data['size'][$key]])->update(['stock' => $stock->stock + $data['soluong'][$key]]);
+                }
+            }
+
+            return redirect()->back()->with('flash_message_success','Products imported successfully');
+        }
+
+        $products = Product::where('isDelete', 0)->get();
+        return view('admin.products.nhaphang', compact('products'));
+    }
+
+    // Nhap hang file
+    public function importFile()
+    {
+        if(!request()->hasFile('file')){
+            return redirect()->back()->with('flash_message_error','You did not choose file');
+        }
+        Excel::import(new ProductsImportFile, request()->file('file'));
+        return redirect()->back()->with('flash_message_success','Products imported successfully');
+    }
+
+
+    // GEt Size
+    public function getSize($id)
+    {
+        $sizes = ProductsAttributes::where('product_id',$id)->select('size')->get();
+        echo $sizes;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

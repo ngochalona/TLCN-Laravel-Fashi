@@ -58,7 +58,7 @@ Route::get('/test-es','ProductController@makeIndexData');
 
 Route::match(['get', 'post'], '/admin', 'AdminController@login')->name('admin_login');
 
-Route::get('/rating/{id}/{star}','ProductController@rating');
+Route::get('/rating/{name}/{star}','ProductController@rating');
 
 //{1. tao php middleware 'frontLogin' 2.vao kernel add middleware }
 // route for middleeware after frontLogin
@@ -157,7 +157,12 @@ Route::group(['middleware' => ['AdminLogin']], function () {
     Route::get('admin/update-blog-status/{id}', 'BlogController@updateStatus' );
     Route::get('/admin/delete_blog/{id}', 'BlogController@deleteBlog');
 
-
+    // nhap hang
+    Route::match(['get', 'post'], '/admin/nhaphang', 'ProductController@nhapHang');
+    Route::get('/admin/getSize/{id}', 'ProductController@getSize');
+    Route::get('/admin/import', 'ProductController@import');
+    Route::get('/admin/nhaphang/{id}', 'ProductController@importDetail');
+    Route::post('/admin/import_file', 'ProductController@importFile');
 });
 
 Route::get('/logout', 'AdminController@logout');

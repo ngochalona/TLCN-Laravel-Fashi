@@ -13,4 +13,9 @@ class Product extends Model
     {
         return $this->hasMany('App\ProductsAttributes', 'product_id');
     }
+
+    public function import()
+    {
+        return $this->hasMany('App\ImportDetails', 'product_id');
+    }
 }

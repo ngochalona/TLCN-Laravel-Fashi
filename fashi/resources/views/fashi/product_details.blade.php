@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text" >
-                    <h2 style="font-family: 'Roboto Slab', serif; letter-spacing: 2px;">Chi Tiết Sản Phẩm</h2>
+                    <h2 style="letter-spacing: 2px;">Chi Tiết Sản Phẩm</h2>
                     <div class="breadcrumb__option">
                         <a href="{{ url('/')}}">Trang chủ</a>
                         <span>Sản phẩm</span>
@@ -105,11 +105,28 @@
                     <input type="hidden" value="{{$productDetails->code}}" name="product_code">
                     <input type="hidden" id="price" value="{{$productDetails->discounted_price}}" name="price">
                     <h3>{{$productDetails->name}}</h3>
+                    <div @if (!Auth::check())
+                            aria-readonly="true"
+                        @endif >
                         <i class="fa fa-star" aria-hidden="true" id="s1"></i>
                         <i class="fa fa-star" aria-hidden="true" id="s2"></i>
                         <i class="fa fa-star" aria-hidden="true" id="s3"></i>
                         <i class="fa fa-star" aria-hidden="true" id="s4"></i>
                         <i class="fa fa-star" aria-hidden="true" id="s5"></i>
+
+                        <span
+                        @if (Auth::check())
+                        class="cmt"
+                        @endif style="color: grey">
+                        @if ($rating == 0)
+                            (chưa có đánh giá)</span>
+                        @else
+                            (trung bình: {{round($rating, 2)}})</span>
+                        @endif
+
+
+                    </div>
+
                     <div class="product__details__price">Giá: {{$productDetails->discounted_price}} VND <span style="color: grey; text-decoration: line-through; font-weight: normal; ">{{$productDetails->price}} VND</span></div>
                     <p>{!! $productDetails->description !!}</p>
                     <div class="product__details__quantity" style="float: left">
@@ -147,28 +164,39 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            @if (!empty($relatedProducts))
-                @foreach ($res as $key => $val)
-                <?php $product = DB::table('products')->where(['name' => $key])->first();?>
-                    @if (isset($product))
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="uploads/products/{{$product->image}}">
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="{{ url('/product/'.$product->id)}}"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#">{{ $product->name }}</a></h6>
-                                    <h5>{{ $product->discounted_price }}VND</h5>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-            @endif
-        </div>
+        <section class="categories">
+            <div class="container">
+                <div class="row">
+                    <div class="categories__slider owl-carousel">
+                        @if (Auth::check())
+                            @if (!empty($res))
+                                @foreach ($res as $key => $val)
+                                <?php $product = DB::table('products')->where(['name' => $key])->first();?>
+                                    @if (isset($product))
+                                        <div class="col-lg-3">
+                                            <div class="categories__item set-bg" data-setbg="uploads/products/{{ $product->image }}">
+                                                <h5><a href="{{ url('/product/'.$product->id)}}">{{$product->name}}</a></h5>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @else
+                            @if (isset($best_seller))
+                                @foreach ($best_seller as $product)
+                                    <div class="col-lg-3">
+                                        <div class="categories__item set-bg" data-setbg="uploads/products/{{ $product->image }}">
+                                            <h5><a href="{{ url('/product/'.$product->id)}}">{{$product->name}}</a></h5>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        @endif
+
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </section>
 <!-- Related Product Section End -->
@@ -178,33 +206,68 @@
 @section('script')
     <script>
        $(document).ready(function() {
+            var avg = Math.round("<?php echo $rating; ?>");
+            switch(avg) {
+                case 1:
+                    $(".fa-star").css("color", "black");
+                    $("#s1").css("color", "#f7ea00");
+                    break;
+                case 2:
+                    $(".fa-star").css("color", "black");
+                    $("#s1, #s2").css("color", "#f7ea00");
+                    break;
+                case 3:
+                    $(".fa-star").css("color", "black");
+                    $("#s1, #s2, #s3").css("color", "#f7ea00");
+                    break;
+                case 4:
+                    $(".fa-star").css("color", "black");
+                    $("#s1, #s2, #s3, #s4").css("color", "#f7ea00");
+                    break;
+                case 5:
+                    $(".fa-star").css("color", "black");
+                    $("#s1, #s2, #s3, #s4, #s5").css("color", "#f7ea00");
+                    break;
+                default:
+                    $(".fa-star").css("color", "black");
+
+            }
            $("#s1").click(function(){
                 $(".fa-star").css("color", "black");
                 $("#s1").css("color", "#f7ea00");
                 rating(1);
+                $(".cmt").text("(trung bình: 1)");
            });
            $("#s2").click(function(){
                 $(".fa-star").css("color", "black");
                 $("#s1, #s2").css("color", "#f7ea00");
+                rating(2);
+                $(".cmt").text("(trung bình: 2)");
            });
            $("#s3").click(function(){
                 $(".fa-star").css("color", "black");
                 $("#s1, #s2, #s3").css("color", "#f7ea00");
+                rating(3);
+                $(".cmt").text("(trung bình: 3)");
            });
            $("#s4").click(function(){
                 $(".fa-star").css("color", "black");
                 $("#s1, #s2, #s3, #s4").css("color", "#f7ea00");
+                rating(4);
+                $(".cmt").text("(trung bình: 4)");
            });
            $("#s5").click(function(){
                 $(".fa-star").css("color", "black");
                 $("#s1, #s2, #s3, #s4, #s5").css("color", "#f7ea00");
+                rating(5);
+                $(".cmt").text("(trung bình: 5)");
            });
        })
 
        function rating(stars) {
-            var proID = "<?php echo $productDetails->id; ?>";
-            $.get("/rating/" + proID + "/" + stars, function (data) {
-                alert(data);
+            var name = "<?php echo $productDetails->name; ?>";
+            $.get("/rating/" + name + "/" + stars, function (data) {
+
             });
        }
     </script>

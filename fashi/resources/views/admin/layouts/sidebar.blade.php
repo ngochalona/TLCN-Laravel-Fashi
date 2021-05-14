@@ -31,6 +31,7 @@
             <ul class="treeview-menu">
                <li><a href="{{url('/admin/add-product')}}">Add Product</a></li>
                <li><a href="{{url('/admin/view-products')}}">View Products</a></li>
+               <li><a href="{{url('/admin/import')}}">Import Products</a></li>
             </ul>
          </li>
          <li class="treeview">

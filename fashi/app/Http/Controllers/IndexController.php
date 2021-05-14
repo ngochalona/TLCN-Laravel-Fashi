@@ -7,6 +7,8 @@ use View;
 use App\Banners;
 use App\Category;
 use App\Product;
+use App\BillsDetails;
+use App\Blog;
 
 class IndexController extends Controller
 {
@@ -28,8 +30,15 @@ class IndexController extends Controller
         $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->get();
         $countHot = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->count();
         $products = Product::where('isDelete', 0)->where(['status' => 1])->get();
+        $best_seller = BillsDetails::query()->join('products', 'bills_details.product_id', '=', 'products.id')
+                    ->select('bills_details.product_id', 'products.image', 'products.name', 'products.id')
+                    ->selectRaw('count(bills_details.bill_id) as product_number')
+                    ->groupBy('bills_details.product_id', 'products.image', 'products.name', 'products.id')
+                    ->orderBy('product_number', 'desc')
+                    ->get();
+        $blog = Blog::where('isDelete', 0)->where(['status' => 1])->get();
 
-        return view('fashi.index',compact('banners','newProducts','hotProducts', 'products','countNew','countHot'));
+        return view('fashi.index',compact('banners','newProducts','hotProducts', 'products','countNew','countHot','blog','best_seller'));
     }
 
     public function categories($id=null)
@@ -46,8 +55,15 @@ class IndexController extends Controller
         $hotProducts = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->get();
         $countHot = Product::where('isDelete', 0)->where(['status' => 1, 'hot' => 1])->count();
         $products = Product::where('isDelete', 0)->where(['status' => 1])->get();
+        $best_seller = BillsDetails::query()->join('products', 'bills_details.product_id', '=', 'products.id')
+                    ->select('bills_details.product_id', 'products.image', 'products.name', 'products.id')
+                    ->selectRaw('count(bills_details.bill_id) as product_number')
+                    ->groupBy('bills_details.product_id', 'products.image', 'products.name', 'products.id')
+                    ->orderBy('product_number', 'desc')
+                    ->get();
+        $blog = Blog::where('isDelete', 0)->where(['status' => 1])->get();
 
-        return view('fashi.index',compact('banners','newProducts','hotProducts', 'products','countNew','countHot'));
+        return view('fashi.index',compact('banners','newProducts','hotProducts', 'products','countNew','countHot','blog','best_seller'));
     }
 
     public function contact()
@@ -63,7 +79,10 @@ class IndexController extends Controller
     // ajax show product
     public function showProductByCate($id)
     {
-        $products = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $id])->get();
+        if($id == 0)
+            $products = Product::where('isDelete', 0)->where(['status' => 1])->get();
+        else
+            $products = Product::where('isDelete', 0)->where(['status' => 1, 'category_id' => $id])->get();
         echo $products;
     }
 
