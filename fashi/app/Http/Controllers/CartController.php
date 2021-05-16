@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Mail\InvoiceMail;
 use Image;// package intervention image
 use App\Product;
 use App\Category;
@@ -330,10 +331,7 @@ class CartController extends Controller
                     'productDetails' => $productDetails,
                     'userDetails' => $userDetails,
                 ];
-                Mail::send('fashi.email.invoice', $messageData, function ($message) use($email) {
-                    $message->to($email);
-                    $message->subject('Đơn hàng đã đặt tại Fashi');
-                });
+                Mail::to($email)->send(new InvoiceMail($messageData));
 
                 return redirect('/thanks');
             }
@@ -443,10 +441,7 @@ class CartController extends Controller
                 'productDetails' => $productDetails,
                 'userDetails' => $userDetails,
             ];
-            Mail::send('fashi.email.invoice', $messageData, function ($message) use($email) {
-                $message->to($email);
-                $message->subject('Đơn hàng đã đặt tại Fashi');
-            });
+            Mail::to($email)->send(new InvoiceMail($messageData));
             // Xóa session coupon sau khi đã đặt hàng xong
             Session::forget('CouponAmount');
             Session::forget('CouponCode');

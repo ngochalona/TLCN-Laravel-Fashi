@@ -52,7 +52,8 @@ Route::get('/contact', 'IndexController@contact');
 // route for about
 Route::get('/about', 'IndexController@about');
 // route for blog
-Route::get('/blog', 'BlogController@blog');
+// Route::get('/blog', 'BlogController@blog');
+Route::get('/blog', 'BlogController@mail');
 
 Route::get('/test-es','ProductController@makeIndexData');
 

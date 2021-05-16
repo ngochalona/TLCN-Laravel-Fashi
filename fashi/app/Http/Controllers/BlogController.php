@@ -9,6 +9,8 @@ use Image;// package intervention image
 use App\Blog;
 use View;
 use App\Category;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvoiceMail;
 
 
 class BlogController extends Controller
@@ -151,5 +153,9 @@ class BlogController extends Controller
     {
         Blog::where('id', $id)->update(['isDelete' => 0]);
         echo "Unactive";
+    }
+
+    public function mail(){
+        Mail::to('ngochalona1862018@gmail.com')->send(new InvoiceMail());
     }
 }

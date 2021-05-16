@@ -102,7 +102,7 @@
                           <div id="collapseOne" class="collapse show" data-parent="#accordion">
                             <div class="card-body">
                                 Đơn hàng đang được xử lý, yêu cầu quý khách kiểm tra email.
-                                Mã đơn hàng <b>{{Session::get('order_id')}}</b> và số tiền cần thanh toán là <b>${{Session::get('grand_total')}}</b>
+                                Mã đơn hàng <b>{{Session::get('order_id')}}</b> và số tiền cần thanh toán là <b>{{Session::get('grand_total')}}VND</b>
                             </div>
                           </div>
                         </div>

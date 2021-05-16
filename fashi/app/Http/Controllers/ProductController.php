@@ -312,7 +312,7 @@ class ProductController extends Controller
     public function elasticSearch(Request $request)
     {
     	if($request->has('search')){
-    		$items = Product::searchByQuery(['match' => ['description' => $request->search]]);
+    		$items = Product::searchByQuery(['match' => ['name' => $request->search]]);
             // dd($items->getHits()["hits"]);
     	}
         $tukhoa = $request->search;
