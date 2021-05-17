@@ -251,10 +251,11 @@ class CartController extends Controller
             ]);
 
             $data = $request->all();
-
+            $billing_city = explode("-", $data['billing_city'])[0];
+            $billing_state = explode("-", $data['billing_state'])[0];
             // cap nhat dia chi cua user
             User::where('id', $user_id)->update(['name'=>$data['billing_name'],'address'=>$data['billing_address']
-                ,'city'=>$data['billing_city'],'state'=>$data['billing_state']
+                ,'city'=>$billing_city,'state'=>$billing_state
                 ,'ward'=>$data['billing_ward'],'mobile'=>$data['billing_mobile']]);
 
             if(empty(Session::get('CouponCode')))
@@ -280,8 +281,8 @@ class CartController extends Controller
             $order->user_email = $user_email;
             $order->name = $data['billing_name'];
             $order->address = $data['billing_address'];
-            $order->city = $data['billing_city'];
-            $order->state = $data['billing_state'];
+            $order->city = $billing_city;
+            $order->state = $billing_state;
             $order->ward = $data['billing_ward'];
             $order->mobile = $data['billing_mobile'];
             $order->coupon_code = $coupon_code;

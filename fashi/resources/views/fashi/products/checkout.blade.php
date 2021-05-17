@@ -113,17 +113,41 @@
                                     <p>Địa chỉ<span>*</span></p>
                                     <input type="text"  name="billing_address" id="billing_address" value="{{$userDetails->address}}">
                                 </div>
-                                <div class="checkout__input">
-                                    <p>Tỉnh / Thành<span>*</span></p>
-                                    <input type="text"  name="billing_city" id="billing_city" value="{{$userDetails->city}}">
-                                </div>
-                                <div class="checkout__input">
-                                    <p>Quận / Huyện<span>*</span></p>
-                                    <input type="text" name="billing_state" id="billing_state" value="{{$userDetails->state}}">
-                                </div>
-                                <div class="checkout__input">
-                                    <p>Phường / Xã<span>*</span></p>
-                                    <input type="text" name="billing_ward" id="billing_ward" value="{{$userDetails->ward}}">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="">Tỉnh / Thành<span style="color: #dd2222">*</span></label>
+                                            </div>
+                                            <div id="tinh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="">Quận / Huyện<span style="color: #dd2222">*</span></label>
+                                            </div>
+                                            <div id="quan">
+                                                <select class="form-control" name="billing_state" id="billing_state">
+                                                    <option>Quận / Huyện</option>
+                                                  </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="">Phường / Xã<span style="color: #dd2222">*</span></label>
+                                            </div>
+                                            <div id="xa">
+                                                <select class="form-control" name="billing_ward" id="billing_ward">
+                                                    <option>Phường / Xã</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="checkout__input">
                                     <p>Số điện thoại<span>*</span></p>
@@ -201,5 +225,75 @@
 
 
 
+
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var city;
+            var url = "https://thongtindoanhnghiep.co/api/city";
+            $.ajax({
+                async: false,
+                url: url,
+                dataType: "json",
+                type: "GET",
+                success: function(data){
+                    city = data;
+                }
+            });
+            var data = '<select style="height: 51px" onchange="getDistrict(this)" class="form-control" name="billing_city" id="billing_city">';
+            city.LtsItem.forEach(element => {
+                data += '<option value="'+ element.Title + '-' + element.ID +'">' + element.Title +'</option>';
+            });
+            data += '</select>';
+            $('#tinh').html(data);
+        });
+
+        function getDistrict(city)
+        {
+            var idCity = city.value.split("-")[1];
+            var district;
+            var url = "https://thongtindoanhnghiep.co/api/city/" + idCity + "/district";
+            $.ajax({
+                async: false,
+                url: url,
+                dataType: "json",
+                type: "GET",
+                success: function(data){
+                    district = data;
+                }
+            });
+            var data = '<select style="height: 51px" onchange="getWard(this)" class="form-control" name="billing_state" id="billing_state">';
+            district.forEach(element => {
+                data += '<option value="'+ element.Title + '-' + element.ID +'">' + element.Title +'</option>';
+            });
+            data += '</select>';
+            $('#quan').html(data);
+        }
+
+        function getWard(district)
+        {
+            var idDis = district.value.split("-")[1];
+            var ward;
+            var url = "https://thongtindoanhnghiep.co/api/district/" + idDis + "/ward";
+            $.ajax({
+                async: false,
+                url: url,
+                dataType: "json",
+                type: "GET",
+                success: function(data){
+                    ward = data;
+                }
+            });
+            var data = '<select style="height: 51px" class="form-control" name="billing_ward" id="billing_ward">';
+            ward.forEach(element => {
+                data += '<option value="'+ element.Title +'">' + element.Title +'</option>';
+            });
+            data += '</select>';
+            $('#xa').html(data);
+        }
+
+    </script>
 
 @endsection
